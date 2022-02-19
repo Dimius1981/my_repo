@@ -1,0 +1,78 @@
+.logo {
+	width: 350px;
+	height: 196px;
+	float: left;
+}
+
+.main-title {
+	background-image: url('../images/title.png');
+	width:  975px;
+	height: 196px;
+	float: left;
+}
+
+.logo-title {
+	min-width: 1366px;
+}
+
+.wrapper {
+	display: flex;
+}
+
+.aside {
+	width: 350px;
+	background-color: gray;
+}
+
+.page {
+	width: 100%;
+	background-color: lightgreen;
+}
+
+.group_color_text {
+  	color: black;
+}
+
+.group_color_text:hover {
+  	color: white;
+}
+
+.subgroup {
+	background-color: #909090;
+	padding-left: 30px;
+}
+
+.page_header {
+	background-color: grey;
+	height: 56px;
+}
+
+.new_class {
+	float: right;
+}
+
+.item {
+	width: 308px;
+	background-color: white;
+}
+
+.item_img {
+
+}
+
+.item_text {
+	width: 100%;
+}
+
+.item_price {
+	width: 100%;
+}
+
+.price {
+	font-size: 32px;
+	font-weight: bold;
+}
+
+.korzinka {
+	
+}

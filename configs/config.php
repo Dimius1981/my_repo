@@ -1,0 +1,3 @@
+<?php
+	$TITLE = 'My Shop';
+?>
