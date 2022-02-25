@@ -2,51 +2,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{$TITLE}</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="./css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="./css/style.css">
-  <script src="./js/bootstrap.bundle.min.js"></script>
+	{include file='head.tpl'}
 </head>
 <body>
 
-<h1>{$name1}</h1>
-
-<p>arr1[0] = {$arr1[0]}</p>
-<p>arr1[1] = {$arr1[1]}</p>
-<p>arr1[2] = {$arr1[2]}</p>
-
-<br/>
-
-{foreach $arr2 as $keyvar => $itemvar}
-	<p>{$keyvar} = {$itemvar}</p>
-{/foreach}
-
-<br/>
-
-<h3>arr2(Block 2) = {$arr2['Block 2']}</h3>
-
-<br/>
-
-<table>
-	<tr>
-		<td>Num</td>
-		<td>Name</td>
-		<td>Value</td>
-	</tr>
-{foreach $data as $item}
-	<tr>
-	{foreach $item as $itemvar}
-		<td>{$itemvar}</td>
-	{/foreach}
-	</tr>
-{/foreach}
-</table>
-
-<br/>
-<br/>
-
+<div class="container-fluid">
+	{include file='header.tpl'}
+	<div class="wrapper">
+		{include file='aside.tpl'}
+		<div class="page">
+			<div class="page_header">
+				<div class="row">
+					<div class="col">
+						<h4 class="m-2">{$PageTitle}</h4>
+					</div>
+					<div class="col">
+						<div class="new_class">
+							<p class="m-3"><a href="/">Главная</a> / {$PageTitle}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="page_content">
+				{$Content}
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		footer
+	</div>
+</div>
 
 
 </body>
