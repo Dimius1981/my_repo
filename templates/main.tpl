@@ -24,7 +24,7 @@
 				</div>
 			</div>
 			<div class="page_content">
-				{$Content}
+				{eval $Content}
 			</div>
 		</div>
 	</div>

@@ -9,48 +9,22 @@
 			</nav>		
 			<div class="collapse show" id="navbarToggleExternalContent">
 			   <ul class="nav flex-column">
+			   	{foreach $gpl as $gpl_item}
 				  <li class="nav-item">
-				    <a class="nav-link group_color_text" href="#">Группа товаров 1</a>
+				  	{* ?page=products&group=1 *}
+				    <a class="nav-link group_color_text" href="?page=products&group={$gpl_item.id}">{$gpl_item.name}</a>
+
+				    	{if $gpl_item.sub}
 					   <ul class="nav flex-column">
+					   	{foreach $gpl_item.sub as $sub_item}
 						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 1-1</a>
+						    <a class="nav-link group_color_text subgroup" href="?page=products&group={$sub_item.id}">{$sub_item.name}</a>
 						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 1-2</a>
-						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 1-3</a>
-						  </li>
+						{/foreach}
 						</ul>
+						{/if}
 				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link group_color_text" href="#">Группа товаров 2</a>
-					   <ul class="nav flex-column">
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 2-1</a>
-						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 2-2</a>
-						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 2-3</a>
-						  </li>
-						</ul>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link group_color_text" href="#">Группа товаров 3</a>
-					   <ul class="nav flex-column">
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 3-1</a>
-						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 3-2</a>
-						  </li>
-						  <li class="nav-item">
-						    <a class="nav-link group_color_text subgroup" href="#">Подгруппа 3-3</a>
-						  </li>
-						</ul>
-				  </li>
+				{/foreach}
 				</ul>
 			</div>
 		</div>

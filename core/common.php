@@ -6,15 +6,35 @@
 		$page = '';
 	}
 
+	if (isset($_GET['group'])) {
+		$group = $_GET['group'];
+	} else {
+		$group = 0;
+	}
+
 	$path = './templates/';
 
 
 //Главная страница
 //============================================================================
 	if ($page == '') {
-		include($path . 'content/main_content.php');
-		$content = $main_content;
+		$content = '<h3>Main page</h3>';
 
+
+
+
+
+
+
+
+
+
+
+
+//Страница О магазине...
+//============================================================================
+   } elseif ($page = 'products') {
+		$content = "{include file='content/products_view.tpl'}";
 
 
 
