@@ -2,6 +2,11 @@
 	{foreach $products as $item}
 		<div class="col p-3">
 			<div class="item d-flex flex-column justify-content-start align-items-center">
+				{if $item.sale}
+					<div class="sale px-2">
+						Sale -{$item.sale_percent}%
+					</div>
+				{/if}
 				<div class="item_img">
 					<img src="{#images#}{$item.image}"/>
 				</div>
@@ -10,7 +15,12 @@
 				</div>
 				<div class="item_price pb-2 d-flex flex-row justify-content-around align-items-center">
 					<div class="price">
-						<span class="price">{$item.price}т</span>
+						{if $item.sale}
+							{$item.new_price}т
+							<div class="old_price">{$item.price}т</div>
+						{else}
+							{$item.price}т
+						{/if}
 					</div>
 					<div class="korzinka">
 						<a href="#">

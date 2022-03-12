@@ -18,7 +18,7 @@
 //Главная страница
 //============================================================================
 	if ($page == '') {
-		$content = '<h3>Main page</h3>';
+		$content = "{include file='content/products_view.tpl'}";
 
 
 

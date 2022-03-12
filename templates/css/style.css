@@ -54,6 +54,7 @@
 .item {
 	width: 308px;
 	background-color: white;
+	position: relative;
 }
 
 .item_img {
@@ -75,4 +76,21 @@
 
 .korzinka {
 	
+}
+
+.sale {
+	position: absolute;
+	left: 30px;
+	top: 20px;
+	background-color: darkred;
+	color: white;
+	font-weight: bold;
+}
+
+.old_price {
+	font-size: 18px;
+	text-decoration: line-through;
+	color: grey;
+	font-weight: normal;
+	text-align: center;
 }

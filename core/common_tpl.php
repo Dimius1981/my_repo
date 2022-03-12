@@ -33,6 +33,28 @@
 		$tpl->assign('PageTitle', 'Акционные товары');
 		$tpl->assign('Content', $content);
 
+		$products_obj = get_sale_products();
+
+		$products_list = Array();
+
+		while ($row = mysqli_fetch_assoc($products_obj)) {
+			//new_price = price - (price * sale_percent / 100)
+
+			//print_r($row);
+
+			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
+
+			//print_r($row);
+
+			//echo "\n";
+
+			$products_list[] = $row;
+		}
+
+
+		$tpl->assign('products', $products_list);
+
+
 		$tpl->display('main.tpl');
 
 
@@ -44,16 +66,20 @@
 //============================================================================
    } elseif ($page = 'products') {
 
+   	$group_info = mysqli_fetch_assoc(get_group_products_by_id($group));
 
+   	//print_r($group_info);
 
-
-		$tpl->assign('PageTitle', 'Подгруппа товаров');
+		$tpl->assign('PageTitle', $group_info['name']);
 		$tpl->assign('Content', $content);
 
 		$products_list = Array();
 		$products_obj = get_products_by_group_id($group);
 
 		while ($row = mysqli_fetch_assoc($products_obj)) {
+			//new_price = price - (price * sale_percent / 100)
+
+			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
 			$products_list[] = $row;
 		}
 

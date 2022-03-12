@@ -39,4 +39,37 @@ function get_products_by_group_id($group_id) {
 	}
 }
 
+
+function get_group_products_by_id($id) {
+	global $connect;
+
+	$sql = "SELECT id, name FROM group_products WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+function get_sale_products() {
+	global $connect;
+
+	$sql = "SELECT * FROM products WHERE sale = 1 ORDER BY name ASC;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
 ?>
