@@ -39,15 +39,8 @@
 
 		while ($row = mysqli_fetch_assoc($products_obj)) {
 			//new_price = price - (price * sale_percent / 100)
-
-			//print_r($row);
-
-			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
-
-			//print_r($row);
-
-			//echo "\n";
-
+			$row['new_price'] = $row['price'] - ($row['price'] *
+				$row['sale_percent'] / 100);
 			$products_list[] = $row;
 		}
 
@@ -62,9 +55,9 @@
 
 
 
-//Страница О магазине...
+//Страница отображения продуктов
 //============================================================================
-   } elseif ($page = 'products') {
+   } elseif ($page == 'products') {
 
    	$group_info = mysqli_fetch_assoc(get_group_products_by_id($group));
 
@@ -84,6 +77,8 @@
 		}
 
 		//print_r($products_list);
+
+		$tpl->assign('group_info', $group_info);
 
 		$tpl->assign('products', $products_list);
 

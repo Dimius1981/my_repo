@@ -21,8 +21,8 @@
 			        </li>
 			      </ul>
 			      <form class="d-flex">
-			        <input class="form-control me-2" type="text" placeholder="Search">
-			        <button class="btn btn-primary" type="button">Search</button>
+			        <input class="form-control me-2" type="text" placeholder="Найти...">
+			        <button class="btn btn-primary" type="button">Найти</button>
 			      </form>
 			    </div>
 			  </div>

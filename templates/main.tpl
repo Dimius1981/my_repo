@@ -18,7 +18,7 @@
 					</div>
 					<div class="col">
 						<div class="new_class">
-							<p class="m-3"><a href="/">Главная</a> / {$PageTitle}</p>
+							<p class="m-3"><a class="group_color_text" href="/">Главная</a> / {$PageTitle}</p>
 						</div>
 					</div>
 				</div>
@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<div class="footer">
-		footer
+		{include file='footer.tpl'}
 	</div>
 </div>
 

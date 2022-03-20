@@ -21,16 +21,16 @@
 
 .aside {
 	width: 350px;
-	background-color: gray;
+	/*background-color: gray;*/
 }
 
 .page {
 	width: 100%;
-	background-color: lightgreen;
 }
 
 .group_color_text {
   	color: black;
+  	background-color: gray;
 }
 
 .group_color_text:hover {
@@ -63,6 +63,23 @@
 
 .item_text {
 	width: 100%;
+	padding: 5px;
+}
+
+.item_text a {
+	color: black;
+	text-decoration: none;
+}
+
+.item_text a:hover {
+	color: navy;
+	text-decoration: underline;
+}
+
+.text_ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .item_price {
@@ -93,4 +110,17 @@
 	color: grey;
 	font-weight: normal;
 	text-align: center;
+}
+
+.footer {
+	background-color: #909090;
+	height: 200px;
+}
+
+.footer_color_text {
+  	color: black;
+}
+
+.footer_color_text:hover {
+  	color: white;
 }
