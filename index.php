@@ -1,4 +1,6 @@
 <?php
+	session_start(); //Для работы с сессиями
+
 	include('./configs/config.php');  //Настройки сайта
 	include('./core/libs/Smarty.class.php'); //Шаблонизатор
 	include('./core/database.php'); //Работа с базой данных

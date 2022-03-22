@@ -1,5 +1,8 @@
 <?php
+	$path = './templates/';
+
 	// http://myshop/?page=about
+
 	if (isset($_GET['page'])) {
 		$page = $_GET['page'];
 	} else {
@@ -12,7 +15,55 @@
 		$group = 0;
 	}
 
-	$path = './templates/';
+
+
+
+
+
+	//проверка на авторизацию
+	if (!empty($_POST['login']) && !empty($_POST['pass'])) {
+		//echo "Authorization\n";
+		authorization($_POST['login'], $_POST['pass']);
+		header('Location: ./', true, 301);
+	}
+
+	//Запросим инфу о сессии пользователя
+	if (!isset($_SESSION['id'])) {
+		$session_id = -1;
+	} else {
+		$session_id = $_SESSION['id'];
+	}
+	//print_r($session_id);
+
+	//Запросим информацию о пользователе
+	$user_info = userinfo($session_id);
+	//$user_info = userinfo(1);
+	//print_r($user_info);
+
+	if ($user_info) {
+		$cur_time_unix = $CUR_TIME;
+		$login_time_unix = strtotime($user_info['date_login']);
+
+		$user_time = $cur_time_unix - $login_time_unix;
+
+		//echo $cur_time_unix."\n";
+		//echo $login_time_unix."\n";
+		//echo $user_time."\n";
+
+		//Проверка на выход пользователя
+		if ((isset($_GET['logout'])) || ($user_time > $TIME_LIVE)) {
+			session_destroy();
+			header('Location: ./', true, 301);
+		} else {
+			usertimeupdate($session_id);
+		}
+	}
+
+
+
+
+
+
 
 //Главная страница
 //============================================================================

@@ -17,7 +17,11 @@
 			          <a class="nav-link" href="?page=cart">Корзина(0)</a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="javascript:void(0)">Вход</a>
+		          	{if $user_info}
+		          		<a class="nav-link" href="/?logout=true">Выход ({$user_info.name})</a>
+		          	{else}
+		          		<a class="nav-link" data-bs-toggle="modal" href="#authModal">Вход</a>
+		          	{/if}
 			        </li>
 			      </ul>
 			      <form class="d-flex">

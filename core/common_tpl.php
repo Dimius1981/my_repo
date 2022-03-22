@@ -5,6 +5,8 @@
 
 	//$tpl->cache_lifetime = 120;
 
+	//Передадим информацию о пользователе в шаблон
+	$tpl->assign('user_info', $user_info);
 
 	$group_products_list = Array();
 	$goup_products_obj = get_group_products_by_par_id(0); //par_id = 0

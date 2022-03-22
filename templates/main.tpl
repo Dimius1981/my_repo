@@ -33,6 +33,7 @@
 	</div>
 </div>
 
+{include file='authorization.tpl'}
 
 </body>
 </html>

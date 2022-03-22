@@ -72,4 +72,68 @@ function get_sale_products() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// User
+// ====================================
+
+// Авторизация. Создание сессии.
+function authorization($login, $pass) {
+	global $connect;
+
+	$sql = "SELECT * FROM users WHERE login = '$login' AND pass = '$pass'";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	} else {
+		$res_arr = mysqli_fetch_assoc($result);
+		$_SESSION['id'] = $res_arr['id'];
+
+		//Обновим время входа только что авторизованного пользователя
+		usertimeupdate($res_arr['id']);
+	}
+}
+
+
+// Пользователь
+function userinfo($session_id) {
+	global $connect;
+
+	$sql = "SELECT * FROM users WHERE id = $session_id;";
+	$result = @mysqli_query($connect, $sql);
+	$res_arr = mysqli_fetch_assoc($result);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+
+	return $res_arr;
+}
+
+//Обновим время входа
+function usertimeupdate($user_id) {
+	global $connect;
+
+	$sql = "UPDATE users SET date_login = NOW() WHERE id = ".$user_id;
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
 ?>
