@@ -92,7 +92,10 @@ function get_sale_products() {
 function authorization($login, $pass) {
 	global $connect;
 
-	$sql = "SELECT * FROM users WHERE login = '$login' AND pass = '$pass'";
+	$str_pass = sha1($pass);
+	//print_r($str_pass);
+
+	$sql = "SELECT * FROM users WHERE login = '$login' AND pass = '$str_pass'";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
