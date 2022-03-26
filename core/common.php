@@ -19,6 +19,7 @@
 
 
 
+	//print_r($_POST);
 
 	//проверка на авторизацию
 	if (!empty($_POST['login']) && !empty($_POST['pass'])) {
@@ -46,10 +47,12 @@
 
 		$user_time = $cur_time_unix - $login_time_unix;
 
+		//echo "CUR_TIME = ".date("Y-m-d H:i:s", $cur_time_unix)."\n";
 		//echo $cur_time_unix."\n";
 		//echo $login_time_unix."\n";
 		//echo $user_time."\n";
 
+		//http://myshop/?logout=true
 		//Проверка на выход пользователя
 		if ((isset($_GET['logout'])) || ($user_time > $TIME_LIVE)) {
 			session_destroy();

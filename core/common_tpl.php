@@ -32,7 +32,12 @@
 //Главная страница
 //============================================================================
 	if ($page == '') {
-		$tpl->assign('PageTitle', 'Акционные товары');
+		if ($user_info) {
+			$page_title = 'Акционные товары ('.$user_info['level_name'].')';
+		} else {
+			$page_title = 'Акционные товары';
+		}
+		$tpl->assign('PageTitle', $page_title);
 		$tpl->assign('Content', $content);
 
 		$products_obj = get_sale_products();

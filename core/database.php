@@ -114,15 +114,14 @@ function authorization($login, $pass) {
 function userinfo($session_id) {
 	global $connect;
 
-	$sql = "SELECT * FROM users WHERE id = $session_id;";
+	$sql = "SELECT users.*, user_levels.name as level_name FROM users INNER JOIN user_levels ON user_levels.id = users.level_id WHERE users.id = $session_id;";
 	$result = @mysqli_query($connect, $sql);
-	$res_arr = mysqli_fetch_assoc($result);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
 		echo "SQL = \"". $sql . "\"";
 	}
 
-	return $res_arr;
+	return mysqli_fetch_assoc($result);
 }
 
 //Обновим время входа
