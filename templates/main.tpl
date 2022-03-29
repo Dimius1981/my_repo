@@ -34,6 +34,7 @@
 </div>
 
 {include file='authorization.tpl'}
+{include file='edit_group.tpl'}
 
 </body>
 </html>

@@ -8,7 +8,7 @@
 	$NAME_DB = 'myshop_db';
 
 	//Время жизни сессии пользователя
-	$TIME_LIVE = 2*60;
+	$TIME_LIVE = 20*60;
 
 	//Текущее время
 	$CUR_TIME = time();
