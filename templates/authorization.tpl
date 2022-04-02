@@ -4,7 +4,7 @@
     <div class="modal-content">
       <form action="/" method="post">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Авторизация</h5>
+          <h5 class="modal-title" id="authModalLabel">Авторизация</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">

@@ -8,6 +8,9 @@ if (mysqli_connect_errno()) {
 }
 
 
+
+
+//Функция вернет группы продуктов по указанной родительской группе
 function get_group_products_by_par_id($par_id) {
 	global $connect;
 
@@ -24,6 +27,8 @@ function get_group_products_by_par_id($par_id) {
 }
 
 
+
+//Функция вернет продукты по указанной группе
 function get_products_by_group_id($group_id) {
 	global $connect;
 
@@ -40,10 +45,12 @@ function get_products_by_group_id($group_id) {
 }
 
 
+
+//Функция вернет группу по ее id
 function get_group_products_by_id($id) {
 	global $connect;
 
-	$sql = "SELECT id, name FROM group_products WHERE id = $id;";
+	$sql = "SELECT * FROM group_products WHERE id = $id;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
@@ -56,6 +63,8 @@ function get_group_products_by_id($id) {
 }
 
 
+
+//Функция вернет продукты со скидкой по всем группам
 function get_sale_products() {
 	global $connect;
 
@@ -73,6 +82,32 @@ function get_sale_products() {
 
 
 
+
+//Функция добавит новую группу товаров
+function add_group_products($par_id, $name, $description, $image) {
+	global $connect;
+
+	$sql = "INSERT INTO group_products (par_id, name, description, image) VALUES ($par_id, '$name', '$description', '$image');";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+//Функция обновляет запись группы с указанным id
+function update_group_products($id, $par_id, $name, $description, $image) {
+	global $connect;
+
+	$sql = "UPDATE group_products SET par_id = $par_id, name = '$name', description = '$description', image = '$image' WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
 
 
 

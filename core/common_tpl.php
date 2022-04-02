@@ -137,6 +137,69 @@
 
 
 
+//JSon GET группа товаров по id
+//============================================================================
+	} elseif ($page == 'jgroup') {
+		$group_obj = get_group_products_by_id($group);
+		$group_arr = mysqli_fetch_assoc($group_obj);
+
+		//print_r($group_arr);
+
+		echo json_encode($group_arr);
+
+
+
+//Запрос на добавление/изменение групп товаров
+//============================================================================
+	} elseif ($page == 'groupsubmit') {
+		//print_r($_POST);
+		if (isset($_POST['group_id'])) {
+			$group_id = $_POST['group_id'];
+		} else {
+			$group_id = 0;
+		}
+		if (isset($_POST['group-par-id'])) {
+			$group_par_id = $_POST['group-par-id'];
+		} else {
+			$group_par_id = 0;
+		}
+		if (isset($_POST['group-name'])) {
+			$group_name = $_POST['group-name'];
+		} else {
+			$group_name = '';
+		}
+		if (isset($_POST['group-description'])) {
+			$group_description = $_POST['group-description'];
+		} else {
+			$group_description = '';
+		}
+		if (isset($_POST['group-file'])) {
+			$group_file = $_POST['group-file'];
+		} else {
+			$group_file = '';
+		}
+
+		if ($group_id > 0) {
+			//Необходимо редактировать данную группу
+			update_group_products($group_id, $group_par_id, $group_name, $group_description, $group_file);
+		} else {
+			//Добавим новую группу
+			add_group_products($group_par_id, $group_name, $group_description, $group_file);
+		}
+
+
+
+
+
+//AJAX вывод каталога меню
+//============================================================================
+	} elseif ($page == 'catalog_view') {
+		$tpl->display('aside.tpl');
+
+
+
+
+
 //404
 //=============================================================================
 	} else {

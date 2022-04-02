@@ -5,7 +5,6 @@
 	{include file='head.tpl'}
 </head>
 <body>
-
 <div class="container-fluid">
 	{include file='header.tpl'}
 	<div class="wrapper">
@@ -36,5 +35,6 @@
 {include file='authorization.tpl'}
 {include file='edit_group.tpl'}
 
+<script src="./templates/js/script.js"></script>
 </body>
 </html>
