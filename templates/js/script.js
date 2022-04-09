@@ -33,8 +33,9 @@ $('#editGroupModal').on('show.bs.modal', function (e) {
 
 
 
-//Обработка нажатия на кнопку Сохранить модального окна редактирования групп товаров
-$('#btnSaveGroup').on('click', function() {
+//Обработчик события по нажатию на кнопке btnSaveGroup
+//который не слетает после обновления AJax-ом модального окна редактирования группы
+$(document).on('click', '#btnSaveGroup', function () {
 	//alert('Click');
 	var form_invalid = 0; //0- форма без ошибок
 	if ($('#group-name').val() == '') {
@@ -59,6 +60,9 @@ $('#btnSaveGroup').on('click', function() {
 				if (data) {
 					$('#catalog_menu').replaceWith(data);
 				}
+				$.get('/?page=modalgroup', function(data) {
+					$('#edit_group_form').replaceWith(data);
+				});
 			});
 		});
 	}
