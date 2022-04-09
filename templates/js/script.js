@@ -9,6 +9,10 @@ $('#editGroupModal').on('show.bs.modal', function (e) {
   $('#group-file').val('');
   $('#group-par-id').val(0);
 
+  //Отключим валидацию формы
+	$('.edit_group_form').removeClass('was-validated');
+  $('#group-name').removeClass('is-invalid');
+
   var group_id = $(e.relatedTarget).data('group-id');
   $('#group_id').val(group_id);
   if (group_id > 0) {
