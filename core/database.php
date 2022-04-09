@@ -46,6 +46,23 @@ function get_products_by_group_id($group_id) {
 
 
 
+//Функция возвращает количество товаров в группе
+function get_col_products_by_group_id($group_id) {
+	global $connect;
+
+	$sql = "SELECT count(id) FROM products WHERE group_id = $group_id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
 //Функция вернет группу по ее id
 function get_group_products_by_id($id) {
 	global $connect;
@@ -102,6 +119,20 @@ function update_group_products($id, $par_id, $name, $description, $image) {
 	global $connect;
 
 	$sql = "UPDATE group_products SET par_id = $par_id, name = '$name', description = '$description', image = '$image' WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+//Функция удаляет запись группы с указанным id
+function delete_group_products($id) {
+	global $connect;
+
+	$sql = "DELETE FROM group_products WHERE id = $id;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";

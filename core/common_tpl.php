@@ -12,14 +12,31 @@
 	$goup_products_obj = get_group_products_by_par_id(0); //par_id = 0
 
 	while($row = mysqli_fetch_assoc($goup_products_obj)) {
+		$col_pro_obj = get_col_products_by_group_id($row['id']);
+		$col_pro_arr = mysqli_fetch_assoc($col_pro_obj);
 		//Есть ли подгруппа
 		//print_r($row);
 		$row['sub'] = Array();
+
+		//Запишем количество товаров в группе верхнего уровня
+		$row_count = $col_pro_arr['count(id)'];
 		$sub_group_obj = get_group_products_by_par_id($row['id']);
+
+		//Создадим счетчик подгрупп
+		//$subgroup_col = 0;
+
 		while($sub_row = mysqli_fetch_assoc($sub_group_obj)) {
+			$col_pro_obj = get_col_products_by_group_id($sub_row['id']);
+			$col_pro_arr = mysqli_fetch_assoc($col_pro_obj);
+			$sub_row['col'] = $col_pro_arr['count(id)'];
+			//Суммируем количество товаров в подгруппах
+			$row_count = $row_count + $col_pro_arr['count(id)'];
 			$row['sub'][] = $sub_row;
+			//$subgroup_col++; //увеличим количество подгрупп на 1
 		}
 
+		$row['col'] = $row_count;
+		//$row['']
 		$group_products_list[] = $row;
 	}
 
@@ -102,6 +119,7 @@
 	} elseif ($page == 'about') {
 		$tpl->assign('PageTitle', 'О магазине...');
 		$tpl->assign('Content', $content);
+
 
 		$tpl->display('main.tpl');
 
@@ -191,10 +209,29 @@
 
 
 
+//Запрос на удаление группы товаров
+//============================================================================
+	} elseif ($page == 'groupdelete') {
+		delete_group_products($group);
+
+
+
+
 //AJAX вывод каталога меню
 //============================================================================
 	} elseif ($page == 'catalog_view') {
 		$tpl->display('aside.tpl');
+
+
+
+
+
+//AJax вывод модального окна редактирования групп товаров
+//============================================================================
+	} elseif ($page == 'modalgroup') {
+		$tpl->display('edit_group.tpl');
+
+
 
 
 

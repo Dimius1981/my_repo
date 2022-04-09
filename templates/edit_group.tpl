@@ -1,5 +1,5 @@
 <!-- Модальное окно -->
-<form class="edit_group_form">
+<form class="edit_group_form" id="edit_group_form">
 <div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="editGroupModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -29,11 +29,6 @@
                   <option selected value="0">Нет</option>
                   {foreach $gpl as $gpl_item}
                   <option value="{$gpl_item.id}">{$gpl_item.name}</option>
-                  {if $gpl_item.sub}
-                    {foreach $gpl_item.sub as $sub_item}
-                      <option value="{$sub_item.id}">&nbsp;&nbsp;{$sub_item.name}</option>
-                    {/foreach}
-                  {/if}
                   {/foreach}
                 </select>
               </div>

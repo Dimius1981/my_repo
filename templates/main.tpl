@@ -33,7 +33,11 @@
 </div>
 
 {include file='authorization.tpl'}
-{include file='edit_group.tpl'}
+
+{if $user_info.level_id == 1}
+  {include file='edit_group.tpl'}
+  {include file='delete_group.tpl'}
+{/if}
 
 <script src="./templates/js/script.js"></script>
 </body>

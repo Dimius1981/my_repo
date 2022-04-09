@@ -123,3 +123,9 @@
 .footer_color_text:hover {
   	color: white;
 }
+
+.right {
+    position: absolute;
+    right: 1rem;
+    top: 0.7rem;
+}
