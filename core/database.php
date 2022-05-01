@@ -100,6 +100,26 @@ function get_sale_products() {
 
 
 
+//Функция вернет товар по id
+function get_product_by_id($id) {
+	global $connect;
+
+	$sql = "SELECT * FROM products WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+// Группы товаров
+// ============================================================================
 //Функция добавит новую группу товаров
 function add_group_products($par_id, $name, $description, $image) {
 	global $connect;
@@ -139,6 +159,70 @@ function delete_group_products($id) {
 		echo "SQL = \"". $sql . "\"";
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Товары
+// ==============================================================
+//Функция добавит новый товар
+function add_new_product($group_id, $name, $description, $image,
+						 $price, $sale, $sale_percent) {
+	global $connect;
+
+	$sql = "INSERT INTO products (group_id, name, price, description, image,
+                                  sale, sale_percent) VALUES ($group_id, '$name',
+                                  $price, '$description', '$image', $sale,
+                                  sale_percent);";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+//Функция обновляет запись товара с указанным id
+function update_product($id, $group_id, $name, $description, $image,
+						$price, $sale, $sale_percent) {
+	global $connect;
+
+	$sql = "UPDATE products SET group_id = $group_id, name = '$name', price = $price, description = '$description', image = '$image', sale = $sale, sale_percent = $sale_percent WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+//Функция удаляет запись товара с указанным id
+function delete_product($id) {
+	global $connect;
+
+	$sql = "DELETE FROM products WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
 
 
 

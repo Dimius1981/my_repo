@@ -13,7 +13,12 @@
 			<div class="page_header">
 				<div class="row">
 					<div class="col">
-						<h4 class="m-2">{$PageTitle}</h4>
+						<h4 class="m-2">
+						{if ($user_info.level_id == 1) && ($page == 'products')}
+							<a class="btn_new_products" data-bs-toggle="modal" href="#editProductModal" id="btnNewProduct" data-product-id="0">{#journal_plus_ico#}</a>
+						{/if}
+						  {$PageTitle}
+						</h4>
 					</div>
 					<div class="col">
 						<div class="new_class">
@@ -22,7 +27,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="page_content">
+			<div class="page_content" id="page_content">
 				{eval $Content}
 			</div>
 		</div>
@@ -37,8 +42,13 @@
 {if $user_info.level_id == 1}
   {include file='edit_group.tpl'}
   {include file='delete_group.tpl'}
+  {include file='edit_product.tpl'}
+  {include file='delete_product.tpl'}
 {/if}
 
 <script src="./templates/js/script.js"></script>
+{if ($page == 'products') || ($page == '')}
+<script src="./templates/js/products.js"></script>
+{/if}
 </body>
 </html>

@@ -1,3 +1,4 @@
+{config_load file='my_conf.conf'}
 <div class="row row-cols-auto justify-content-center">
 	{foreach $gpl as $item}
 	{if $item.id == $group_info.id}
@@ -5,9 +6,19 @@
 		{foreach $item.sub as $subitem}
 		<div class="col p-3">
 			<div class="item d-flex flex-column justify-content-start align-items-center  shadow">
+				{if $user_info.level_id == 1}
+					<div class="prod_icons p-2">
+						<a class="prod_color_text p-2" data-bs-toggle="modal" href="#editGroupModal" data-group-id="{$subitem.id}">{#pencil_ico#}</a>
+				  		<a class="prod_color_text p-2" data-bs-toggle="modal" href="#deleteGroupModal" data-group-id="{$subitem.id}" data-group-name="{$subitem.name}" data-subgroup-col="{count($item.sub)}" data-prod-col="{$subitem.col}">{#trash_ico#}</a>
+					</div>
+				{/if}
 				<div class="item_img">
 					<a href="?page=products&group={$subitem.id}">
-						<img src="{#images#}{$subitem.image}"/>
+						{if $subitem.image}
+							<img src="{#images#}{$subitem.image}"/>
+						{else}
+							<img src="{#images#}blank.png"/>
+						{/if}
 					</a>
 				</div>
 				<div class="item_text p-2">
@@ -34,9 +45,19 @@
 						Sale -{$item.sale_percent}%
 					</div>
 				{/if}
+				{if $user_info.level_id == 1}
+					<div class="prod_icons p-2">
+						<a class="prod_color_text p-2" data-bs-toggle="modal" href="#editProductModal" data-product-id="{$item.id}">{#pencil_ico#}</a>
+				  		<a class="prod_color_text p-2" data-bs-toggle="modal" href="#deleteProductModal" data-product-id="{$item.id}" data-product-name="{$item.name}">{#trash_ico#}</a>
+					</div>
+				{/if}
 				<div class="item_img">
 					<a href="#">
-						<img src="{#images#}{$item.image}"/>
+						{if $item.image}
+							<img src="{#images#}{$item.image}"/>
+						{else}
+							<img src="{#images#}prod_blank.png"/>
+						{/if}
 					</a>
 				</div>
 				<div class="item_text p-2">

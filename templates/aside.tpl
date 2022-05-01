@@ -21,7 +21,7 @@
 				  <li class="nav-item">
 				  	{* ?page=products&group=1 *}
 				  	{if $user_info.level_id == 1}
-				  	<div class="d-flex group_color_text position-relative"><a class="nav-link group_color_text p-2 btn-edit-group" data-bs-toggle="modal" href="#editGroupModal" data-group-id="{$gpl_item.id}">{#pencil_ico#}</a>
+				  	<div class="d-flex group_color_text position-relative"><a class="nav-link group_color_text p-2" data-bs-toggle="modal" href="#editGroupModal" data-group-id="{$gpl_item.id}">{#pencil_ico#}</a>
 				  	<a class="nav-link group_color_text p-2" data-bs-toggle="modal" href="#deleteGroupModal" data-group-id="{$gpl_item.id}" data-group-name="{$gpl_item.name}" data-subgroup-col="{count($gpl_item.sub)}" data-prod-col="{$gpl_item.col}">{#trash_ico#}</a>
 				    <a class="nav-link group_color_text p-2" href="?page=products&group={$gpl_item.id}">{$gpl_item.name}<span class="badge bg-secondary right">{$gpl_item.col}</span></a>
 				    </div>
@@ -35,7 +35,7 @@
 						  <li class="nav-item">
 						  	{if $user_info.level_id == 1}
 						  	<div class="d-flex group_color_text subgroup ps-3 position-relative">
-						  	<a class="nav-link group_color_text subgroup p-2 btn-edit-group" data-bs-toggle="modal" href="#editGroupModal" id="btnEditGroup" data-group-id="{$sub_item.id}">{#pencil_ico#}</a>
+						  	<a class="nav-link group_color_text subgroup p-2" data-bs-toggle="modal" href="#editGroupModal" id="btnEditGroup" data-group-id="{$sub_item.id}">{#pencil_ico#}</a>
 						  	<a class="nav-link group_color_text subgroup p-2" data-bs-toggle="modal" href="#deleteGroupModal" data-group-id="{$sub_item.id}" data-group-name="{$sub_item.name}" data-subgroup-col="0" data-prod-col="{$sub_item.col}">{#trash_ico#}</a>
 						    <a class="nav-link group_color_text subgroup p-2" href="?page=products&group={$sub_item.id}">{$sub_item.name}<span class="badge bg-secondary right">{$sub_item.col}</span></a>
 							</div>

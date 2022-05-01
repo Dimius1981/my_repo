@@ -22,9 +22,6 @@
 		$row_count = $col_pro_arr['count(id)'];
 		$sub_group_obj = get_group_products_by_par_id($row['id']);
 
-		//Создадим счетчик подгрупп
-		//$subgroup_col = 0;
-
 		while($sub_row = mysqli_fetch_assoc($sub_group_obj)) {
 			$col_pro_obj = get_col_products_by_group_id($sub_row['id']);
 			$col_pro_arr = mysqli_fetch_assoc($col_pro_obj);
@@ -32,15 +29,18 @@
 			//Суммируем количество товаров в подгруппах
 			$row_count = $row_count + $col_pro_arr['count(id)'];
 			$row['sub'][] = $sub_row;
-			//$subgroup_col++; //увеличим количество подгрупп на 1
 		}
 
 		$row['col'] = $row_count;
-		//$row['']
 		$group_products_list[] = $row;
 	}
 
 	$tpl->assign('gpl', $group_products_list);
+
+
+	//Передадим инфу о странице и о группе товаров
+	$tpl->assign('page',$page);
+	$tpl->assign('group',$group);
 
 
 
@@ -72,7 +72,12 @@
 		$tpl->assign('products', $products_list);
 
 
-		$tpl->display('main.tpl');
+		if (!$tp) {
+			$tpl->display('main.tpl');
+		} else {
+			$tpl->display('content/'.$tp);
+		}
+
 
 
 
@@ -106,7 +111,13 @@
 
 		$tpl->assign('products', $products_list);
 
-		$tpl->display('main.tpl');
+		//print_r($tp);
+
+		if (!$tp) {
+			$tpl->display('main.tpl');
+		} else {
+			$tpl->display('content/'.$tp);
+		}
 
 
 
@@ -155,7 +166,10 @@
 
 
 
-//JSon GET группа товаров по id
+//============================================================================
+// Группы товаров
+// ===========================================================================
+// JSon GET группа товаров по id
 //============================================================================
 	} elseif ($page == 'jgroup') {
 		$group_obj = get_group_products_by_id($group);
@@ -164,6 +178,8 @@
 		//print_r($group_arr);
 
 		echo json_encode($group_arr);
+
+
 
 
 
@@ -230,6 +246,112 @@
 //============================================================================
 	} elseif ($page == 'modalgroup') {
 		$tpl->display('edit_group.tpl');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================================
+// Товары
+// ===========================================================================
+// JSon GET товара по id
+//============================================================================
+	} elseif ($page == 'jproduct') {
+		$prod_obj = get_product_by_id($id);
+		$prod_arr = mysqli_fetch_assoc($prod_obj);
+		echo json_encode($prod_arr);
+
+
+
+
+//Запрос на добавление/изменение товаров
+//============================================================================
+	} elseif ($page == 'productsubmit') {
+		print_r($_POST);
+
+/*
+_POST Array
+Array
+(
+     [product-name] => Товар 1 из группы 1-1
+     [product-group-id] => 5
+     [product-description] => Это описание товара 1 из группы 1-1
+     [product-price] => 1000
+     [product-sale] => on
+     [product-percent] => 20
+     [product-file] => ./images/group05\phone01.png
+     [product_id] => 1
+)
+ */
+		if (isset($_POST['product_id'])) {
+			$product_id = $_POST['product_id'];
+		} else {
+			$product_id = 0;
+		}
+		if (isset($_POST['product-group-id'])) {
+			$product_group_id = $_POST['product-group-id'];
+		} else {
+			$product_group_id = 0;
+		}
+		if (isset($_POST['product-name'])) {
+			$product_name = $_POST['product-name'];
+		} else {
+			$product_name = '';
+		}
+		if (isset($_POST['product-description'])) {
+			$product_description = $_POST['product-description'];
+		} else {
+			$product_description = '';
+		}
+		if (isset($_POST['product-file'])) {
+			$product_file = $_POST['product-file'];
+		} else {
+			$product_file = '';
+		}
+		if (isset($_POST['product-price'])) {
+			$product_price = $_POST['product-price'];
+		} else {
+			$product_price = 0;
+		}
+		if (isset($_POST['product-sale'])) {
+			$product_sale = 1;
+		} else {
+			$product_sale = 0;
+		}
+		if (isset($_POST['product-percent'])) {
+			$product_percent = $_POST['product-percent'];
+			if ($product_percent == '') {
+				$product_percent = 0;
+			}
+		} else {
+			$product_percent = 0;
+		}
+
+		if ($product_id > 0) {
+			//Необходимо редактировать данную группу
+			update_product($product_id, $product_group_id, $product_name, $product_description, $product_file, $product_price, $product_sale, $product_percent);
+		} else {
+			//Добавим новый товар
+			add_new_product($product_group_id, $product_name, $product_description, $product_file, $product_price, $product_sale, $product_percent);
+		}
+
+
+//Запрос на удаление товара
+//============================================================================
+	} elseif ($page == 'productdelete') {
+		delete_product($id);
+
+
+
 
 
 

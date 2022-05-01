@@ -57,7 +57,7 @@ $(document).on('click', '#btnSaveGroup', function () {
 		$('.edit_group_form').removeClass('was-validated');
 
 		$.post('/?page=groupsubmit', $('.edit_group_form').serialize(), function(data) {
-			console.log(data);
+			//console.log(data);
 			$('#editGroupModal').modal('hide');
 			//Отправили данные на сервер, теперь обновим каталог!
 			$.get('/?page=catalog_view', function(data) {
@@ -107,7 +107,7 @@ $('#btnDeleteGroup').on('click', function(e) {
 	var group_id = $(this).attr('data-group-id');
 	//alert(group_id);
 	$.get('/?page=groupdelete&group='+group_id, function(data){
-		console.log(data);
+		//console.log(data);
 		//alert('Delete!');
 		$('#deleteGroupModal').modal('hide'); //Прячем окно
 		//Отправили данные на сервер, теперь обновим каталог!
@@ -121,3 +121,4 @@ $('#btnDeleteGroup').on('click', function(e) {
 		});
 	});
 });
+
