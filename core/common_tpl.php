@@ -95,8 +95,36 @@
 		$tpl->assign('PageTitle', $group_info['name']);
 		$tpl->assign('Content', $content);
 
+		//Pagination
+		$col_prod_obj = get_col_products_by_group_id($group);
+		$col_prod = mysqli_fetch_assoc($col_prod_obj);
+		$col = $col_prod['count(id)'];
+		$page_prod = intdiv($col, $MAX_PROD_PAGE);
+		$page_half = $col % $MAX_PROD_PAGE;
+		//echo $col. ' / '. $page_prod. ' / '. $page_half;
+
+		$pagination = Array();
+		for ($i = 0; $i < $col; $i = $i + $MAX_PROD_PAGE) {
+			$pagination[] = $i;
+		}
+
+		//print_r($pagination);
+
+		$prev_page = $start - $MAX_PROD_PAGE;
+		if ($prev_page < 0)
+			$prev_page = -1;
+
+		$next_page = $start + $MAX_PROD_PAGE;
+		if ($next_page > $col)
+			$next_page = -1;
+
+		$tpl->assign('pagination', $pagination);
+		$tpl->assign('start', $start);
+		$tpl->assign('prev_page', $prev_page);
+		$tpl->assign('next_page', $next_page);
+
 		$products_list = Array();
-		$products_obj = get_products_by_group_id($group);
+		$products_obj = get_products_by_group_id($group, $start);
 
 		while ($row = mysqli_fetch_assoc($products_obj)) {
 			//new_price = price - (price * sale_percent / 100)
@@ -110,6 +138,8 @@
 		$tpl->assign('group_info', $group_info);
 
 		$tpl->assign('products', $products_list);
+
+
 
 		//print_r($tp);
 
@@ -351,6 +381,23 @@ Array
 		delete_product($id);
 
 
+//Страница товара
+//============================================================================
+	} elseif ($page == 'prod') {
+		$prod_obj = get_product_by_id($id);
+		$prod = mysqli_fetch_assoc($prod_obj);
+
+		//Посчитаем скидку
+		if ($prod['sale']) {
+			$prod['new_price'] = $prod['price'] - ($prod['price'] * $prod['sale_percent'] / 100);
+		}
+
+		$tpl->assign('PageTitle', 'Товар: '. $prod['name']);
+		$tpl->assign('Content', $content);
+
+		$tpl->assign('prod_info', $prod);
+
+		$tpl->display('main.tpl');
 
 
 

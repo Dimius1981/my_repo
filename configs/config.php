@@ -20,4 +20,6 @@
 	$MANAGER = 3;
 	$SHOPER = 4;
 
+	$MAX_PROD_PAGE = 9;
+
 ?>

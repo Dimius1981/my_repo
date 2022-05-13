@@ -52,7 +52,7 @@
 					</div>
 				{/if}
 				<div class="item_img">
-					<a href="#">
+					<a href="/?page=prod&id={$item.id}">
 						{if $item.image}
 							<img src="{#images#}{$item.image}"/>
 						{else}
@@ -91,3 +91,27 @@
 		</div>
 	{/foreach}
 </div>
+
+<nav aria-label="Пример навигации по страницам">
+  <ul class="pagination justify-content-center">
+  	{if $prev_page < 0}
+    	<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a></li>
+    {else}
+    	<li class="page-item"><a class="page-link" href="/?page={$page}&group={$group}&start={$prev_page}">Предыдущая</a></li>
+    {/if}
+    {$page_count = 1}
+    {foreach $pagination as $item}
+    	{if $item == $start}
+    		<li class="page-item active" aria-current="page"><a class="page-link" href="/?page={$page}&group={$group}&start={$item}">{$page_count}</a></li>
+    	{else}
+    		<li class="page-item"><a class="page-link" href="/?page={$page}&group={$group}&start={$item}">{$page_count}</a></li>
+    	{/if}
+    	{$page_count = $page_count + 1}
+    {/foreach}
+    {if $next_page < 0}
+    	<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Следующая</a></li>
+    {else}
+    	<li class="page-item"><a class="page-link" href="/?page={$page}&group={$group}&start={$next_page}">Следующая</a></li>
+    {/if}
+  </ul>
+</nav>

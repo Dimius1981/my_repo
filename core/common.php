@@ -27,6 +27,11 @@
 		$tp = '';
 	}
 
+	if (isset($_GET['start'])) {
+		$start = $_GET['start'];
+	} else {
+		$start = 0;
+	}
 
 
 	//print_r($_POST);
@@ -211,6 +216,10 @@
 		$content = '<h3>Product delete page</h3>';
 
 
+//Страница товара
+//============================================================================
+	} elseif ($page == 'prod') {
+		$content = "{include file='content/prod_info.tpl'}";
 
 
 

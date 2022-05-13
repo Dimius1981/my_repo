@@ -29,10 +29,11 @@ function get_group_products_by_par_id($par_id) {
 
 
 //Функция вернет продукты по указанной группе
-function get_products_by_group_id($group_id) {
+function get_products_by_group_id($group_id, $start) {
 	global $connect;
+	global $MAX_PROD_PAGE;
 
-	$sql = "SELECT * FROM products WHERE group_id = $group_id ORDER BY name ASC;";
+	$sql = "SELECT * FROM products WHERE group_id = $group_id ORDER BY name ASC LIMIT $start, $MAX_PROD_PAGE;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
@@ -100,21 +101,6 @@ function get_sale_products() {
 
 
 
-//Функция вернет товар по id
-function get_product_by_id($id) {
-	global $connect;
-
-	$sql = "SELECT * FROM products WHERE id = $id;";
-	$result = @mysqli_query($connect, $sql);
-	if (!$result) {
-		echo "MySQL Error: ".mysqli_error($connect)."</br>";
-		echo "SQL = \"". $sql . "\"";
-
-		return 0;
-	} else {
-		return $result;
-	}
-}
 
 
 
@@ -176,6 +162,26 @@ function delete_group_products($id) {
 
 // Товары
 // ==============================================================
+//Функция вернет товар по id
+function get_product_by_id($id) {
+	global $connect;
+
+	$sql = "SELECT * FROM products WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+
 //Функция добавит новый товар
 function add_new_product($group_id, $name, $description, $image,
 						 $price, $sale, $sale_percent) {
@@ -223,6 +229,36 @@ function delete_product($id) {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+//Корзина
+//=========================================================
+//Функция вернет список товаров в корзине пользователя
+function get_products_from_cart_by_user_id($user_id, $start) {
+	global $connect;
+	global $MAX_PROD_PAGE;
+
+	$sql = "SELECT * FROM carts INNER JOIN products ON carts.product_id = products.id
+WHERE carts.user_id = $user_id LIMIT $start, $MAX_PROD_PAGE;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
 
 
 
