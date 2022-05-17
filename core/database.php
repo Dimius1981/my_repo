@@ -247,7 +247,7 @@ function get_products_from_cart_by_user_id($user_id, $start) {
 	global $connect;
 	global $MAX_PROD_PAGE;
 
-	$sql = "SELECT * FROM carts INNER JOIN products ON carts.product_id = products.id
+	$sql = "SELECT carts.*, products.name, products.description, products.price, products.image, products.sale, products.sale_percent FROM carts INNER JOIN products ON carts.product_id = products.id
 WHERE carts.user_id = $user_id LIMIT $start, $MAX_PROD_PAGE;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
@@ -260,6 +260,37 @@ WHERE carts.user_id = $user_id LIMIT $start, $MAX_PROD_PAGE;";
 	}
 }
 
+
+
+//Функция возвращает количество товаров в корзине
+function get_col_products_from_cart($user_id) {
+	global $connect;
+
+	$sql = "SELECT count(id) FROM carts WHERE user_id = $user_id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+//Функция добавит товар в корзину
+function add_cart_product($user_id, $prod_id, $col) {
+	global $connect;
+
+	$sql = "INSERT INTO carts (user_id, product_id, col) VALUES ($user_id, $prod_id,
+                                  $col);";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
 
 
 

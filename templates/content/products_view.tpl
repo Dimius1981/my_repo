@@ -82,9 +82,15 @@
 						{/if}
 					</div>
 					<div class="korzinka">
-						<a href="#">
-							<img src="{#path#}images/korz2.png"/>
-						</a>
+						{if $user_info}
+							<a data-bs-toggle="modal" href="#addToCartModal" data-cart-product-id="{$item.id}" data-cart-product-name="{$item.name}" data-cart-product-price="{$item.new_price}">
+								<img src="{#path#}images/korz2.png"/>
+							</a>
+						{else}
+							<a href="#">
+								<img src="{#path#}images/korz2.png"/>
+							</a>
+						{/if}
 					</div>
 				</div>
 			</div>

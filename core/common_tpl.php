@@ -42,7 +42,9 @@
 	$tpl->assign('page',$page);
 	$tpl->assign('group',$group);
 
-
+	//Запрос количества товаров в корзине
+	$col_prod_cart = mysqli_fetch_assoc(get_col_products_from_cart($session_id));
+	$tpl->assign('prod_in_cart', $col_prod_cart['count(id)']);
 
 
 
@@ -129,7 +131,7 @@
 		while ($row = mysqli_fetch_assoc($products_obj)) {
 			//new_price = price - (price * sale_percent / 100)
 
-			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
+			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100) * $row['sale'];
 			$products_list[] = $row;
 		}
 
@@ -187,10 +189,68 @@
 //Страница Корзина
 //============================================================================
 	} elseif ($page == 'cart') {
-		$tpl->assign('PageTitle', 'Корзина (0)');
+		$prod_carts_obj = get_products_from_cart_by_user_id($session_id, $start);
+		$prod_carts_arr = Array();
+		$bg_color = " bg-light";
+		while ($row = mysqli_fetch_assoc($prod_carts_obj)) {
+			$row['bg_color'] = $bg_color;
+			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
+			if ($row['sale']) {
+				$row['sum'] = $row['col'] * $row['new_price'];
+			} else {
+				$row['sum'] = $row['col'] * $row['price'];
+			}
+			$prod_carts_arr[] = $row;
+			if ($bg_color == "") {
+				$bg_color = " bg-light";
+			} else {
+				$bg_color = "";
+			}
+		}
+
+		//print_r($prod_carts_arr);
+
+		$tpl->assign('PageTitle', 'Корзина (количество товаров: '.count($prod_carts_arr).')');
 		$tpl->assign('Content', $content);
 
+		$tpl->assign('prod_carts', $prod_carts_arr);
+
+
 		$tpl->display('main.tpl');
+
+
+
+
+
+
+//Добавление товаров в корзину
+//============================================================================
+	} elseif ($page == 'addcart') {
+		print_r($_POST);
+		if (isset($_POST['cart_product_id'])) {
+			$product_id = $_POST['cart_product_id'];
+		} else {
+			$product_id = 0;
+		}
+		if (isset($_POST['cart-col-prod'])) {
+			$product_col = $_POST['cart-col-prod'];
+		} else {
+			$product_col = 0;
+		}
+
+		add_cart_product($session_id, $product_id, $product_col);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

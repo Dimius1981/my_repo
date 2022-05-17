@@ -13,9 +13,11 @@
 			        <li class="nav-item">
 			          <a class="nav-link" href="?page=act_page">Акции</a>
 			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link" href="?page=cart">Корзина(0)</a>
-			        </li>
+			        {if $user_info}
+				        <li class="nav-item">
+				          <a class="nav-link" href="?page=cart">Корзина <span class="badge bg-primary">{$prod_in_cart}</span></a>
+				        </li>
+			        {/if}
 			        <li class="nav-item">
 		          	{if $user_info}
 		          		<a class="nav-link" href="/?logout=true">Выход ({$user_info.name})</a>

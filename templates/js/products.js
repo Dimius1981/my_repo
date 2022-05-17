@@ -176,3 +176,46 @@ $('#btnDeleteProduct').on('click', function(e) {
   });
 });
 
+//Открытие модального окна добавления товаров в корзину
+$('#addToCartModal').on('show.bs.modal', function (e) {
+  //alert('Open!');
+  var product_id = $(e.relatedTarget).data('cart-product-id');
+  $('#cart_product_id').val(product_id);
+  var product_name = $(e.relatedTarget).data('cart-product-name');
+  $('#cart-prod-name').html(product_name);
+  var product_price = $(e.relatedTarget).data('cart-product-price');
+  $('#cart-prod-price').html(product_price);
+
+  var product_col = 1;
+  $('#cart-prod-col').html(product_col);
+  $('#cart-col-prod').val(product_col);
+
+  var product_sum = product_col * product_price;
+  $('#cart-prod-sum').html(product_sum);
+});
+
+
+$('#cart-col-prod').on('click', function() {
+  //alert($(this).val());
+  var col = $(this).val();
+  var price = $('#cart-prod-price').html();
+  var sum = col * price;
+  $('#cart-prod-col').html(col);
+  $('#cart-prod-sum').html(sum);
+});
+
+$('#cart-col-prod').on('keyup', function() {
+  //alert($(this).val());
+  var col = $(this).val();
+  var price = $('#cart-prod-price').html();
+  var sum = col * price;
+  $('#cart-prod-col').html(col);
+  $('#cart-prod-sum').html(sum);
+});
+
+$('#btnAddToCart').on('click', function() {
+  //alert($('.add_to_cart_form').serialize());
+  $.post('/?page=addcart', $('.add_to_cart_form').serialize(), function(data) {
+    console.log(data);
+  });
+});

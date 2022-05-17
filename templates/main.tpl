@@ -46,6 +46,11 @@
   {include file='delete_product.tpl'}
 {/if}
 
+{if $user_info}
+	{include file='add_to_cart.tpl'}
+{/if}
+
+
 <script src="./templates/js/script.js"></script>
 {if ($page == 'products') || ($page == '')}
 <script src="./templates/js/products.js"></script>
