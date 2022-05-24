@@ -142,7 +142,9 @@ $(document).on('click', '#product-sale', function () {
 $('#deleteProductModal').on('show.bs.modal', function (e) {
   var product_id = $(e.relatedTarget).data('product-id');
   var product_name = $(e.relatedTarget).data('product-name');
+  var page_delete = $(e.relatedTarget).data('page-delete');
   $('#btnDeleteProduct').attr('data-product-id', product_id);
+  $('#btnDeleteProduct').attr('data-page-del', page_delete);
   //alert(prod_col);
 
   $('#deleteProductQuestion').html('Вы действительно хотите удалить товар: '+
@@ -153,26 +155,42 @@ $('#deleteProductModal').on('show.bs.modal', function (e) {
 
 $('#btnDeleteProduct').on('click', function(e) {
   var product_id = $(this).attr('data-product-id');
+  var page_delete = $(this).attr('data-page-del');
   //alert(product_id);
-  $.get('/?page=productdelete&id='+product_id, function(data){
+  $.get('/?page=' + page_delete + '&id='+product_id, function(data){
     //console.log(data);
     //alert('Delete!');
     $('#deleteProductModal').modal('hide'); //Прячем окно
-    var page = $('#page').val();
-    var group = $('#group').val();
-    //console.log('/?page='+page+'&group='+group+'&tp=products_view.tpl');
-    //Отправили данные на сервер, теперь обновим список товаров!
-    $.get('/?page='+page+'&group='+group+'&tp=products_view.tpl', function(data) {
-      //console.log(data);
-      if (data) {
-        $('#page_content').html(data);
-        $.get('/?page=catalog_view', function(data) {
-          if (data) {
-            $('#catalog_menu').replaceWith(data);
-          }
-        });
-      }
-    });
+    if (page_delete == 'productdelete') {
+      var page = $('#page').val();
+      var group = $('#group').val();
+      //console.log('/?page='+page+'&group='+group+'&tp=products_view.tpl');
+      //Отправили данные на сервер, теперь обновим список товаров!
+      $.get('/?page='+page+'&group='+group+'&tp=products_view.tpl', function(data) {
+        //console.log(data);
+        if (data) {
+          $('#page_content').html(data);
+          $.get('/?page=catalog_view', function(data) {
+            if (data) {
+              $('#catalog_menu').replaceWith(data);
+            }
+          });
+        }
+      });
+    } else {
+      //Обновим страницу корзины
+      $.get('/?page=cart&tp=carts_view.tpl', function(data) {
+        console.log(data);
+        if (data) {
+          $('#page_content').html(data);
+        }
+      });
+      //и счетчик товаров в корзине
+      $.getJSON('/?page=colcart', function(data) {
+        console.log(data.col_prod_cart);
+        $('#prod_in_cart').html(data.col_prod_cart);
+      });
+    }
   });
 });
 
@@ -195,7 +213,7 @@ $('#addToCartModal').on('show.bs.modal', function (e) {
 });
 
 
-$('#cart-col-prod').on('click', function() {
+$('#cart-col-prod').on('change', function() {
   //alert($(this).val());
   var col = $(this).val();
   var price = $('#cart-prod-price').html();
@@ -204,6 +222,7 @@ $('#cart-col-prod').on('click', function() {
   $('#cart-prod-sum').html(sum);
 });
 
+/*
 $('#cart-col-prod').on('keyup', function() {
   //alert($(this).val());
   var col = $(this).val();
@@ -212,10 +231,33 @@ $('#cart-col-prod').on('keyup', function() {
   $('#cart-prod-col').html(col);
   $('#cart-prod-sum').html(sum);
 });
+*/
 
 $('#btnAddToCart').on('click', function() {
   //alert($('.add_to_cart_form').serialize());
   $.post('/?page=addcart', $('.add_to_cart_form').serialize(), function(data) {
+    console.log(data);
+    $('#addToCartModal').modal('hide');
+    //Обновить кол-во товаров в меню "Корзина"
+    $.getJSON('/?page=colcart', function(data) {
+        console.log(data.col_prod_cart);
+        $('#prod_in_cart').html(data.col_prod_cart);
+    });
+  });
+});
+
+
+$("[name='prod-col']").on('click', function(){
+  var cart_id = $(this).attr('data-cart-id');
+  var product_id = $(this).attr('data-cart-prod-id');
+  var product_price = $(this).attr('data-cart-price');
+  var product_col = $(this).val();
+  //alert($(this).val() + ', ' + cart_id + ', ' + product_id);
+
+  var new_sum = product_col * product_price;
+  $('#sum-'+cart_id).html(new_sum);
+
+  $.get('/?page=updcart&id='+cart_id+'&col='+product_col+'&prod='+product_id, function(data) {
     console.log(data);
   });
 });

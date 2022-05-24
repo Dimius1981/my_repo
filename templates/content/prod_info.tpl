@@ -35,7 +35,7 @@
 					{else}
 						<h3>{$prod_info.price}т</h3>
 					{/if}
-					<button type="button" class="btn btn-primary" id="btnAddToCart">Добавить в корзину</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addToCartModal" data-cart-product-id="{$prod_info.id}" data-cart-product-name="{$prod_info.name}" data-cart-product-price="{$prod_info.new_price}">Добавить в корзину</button>
 				</div>
 			</div>
 		</div>

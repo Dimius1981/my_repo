@@ -15,7 +15,7 @@
 			        </li>
 			        {if $user_info}
 				        <li class="nav-item">
-				          <a class="nav-link" href="?page=cart">Корзина <span class="badge bg-primary">{$prod_in_cart}</span></a>
+				          <a class="nav-link" href="?page=cart">Корзина <span class="badge bg-primary" id="prod_in_cart">{$prod_in_cart}</span></a>
 				        </li>
 			        {/if}
 			        <li class="nav-item">

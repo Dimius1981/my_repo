@@ -48,7 +48,7 @@
 				{if $user_info.level_id == 1}
 					<div class="prod_icons p-2">
 						<a class="prod_color_text p-2" data-bs-toggle="modal" href="#editProductModal" data-product-id="{$item.id}">{#pencil_ico#}</a>
-				  		<a class="prod_color_text p-2" data-bs-toggle="modal" href="#deleteProductModal" data-product-id="{$item.id}" data-product-name="{$item.name}">{#trash_ico#}</a>
+				  		<a class="prod_color_text p-2" data-bs-toggle="modal" href="#deleteProductModal" data-product-id="{$item.id}" data-product-name="{$item.name}" data-page-delete="productdelete">{#trash_ico#}</a>
 					</div>
 				{/if}
 				<div class="item_img">

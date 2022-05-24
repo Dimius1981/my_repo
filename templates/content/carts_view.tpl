@@ -49,13 +49,13 @@
 			{/if}
 		</div>
 		<div class="col-1 text-center m-2">
-			<input type="number" class="form-control" id="prod-col" name="prod-col" value="{$item.col}">
+			<input type="number" class="form-control" name="prod-col" value="{$item.col}" data-cart-id="{$item.id}" data-cart-prod-id="{$item.product_id}" data-cart-price="{$item.new_price}">
 		</div>
-		<div class="col-1 text-center m-2">
+		<div class="col-1 text-center m-2" id="sum-{$item.id}">
 			{$item.sum}
 		</div>
 		<div class="col-1 text-center m-2">
-			<a class="p-2" href="#">{#trash_ico#}</a>
+			<a class="p-2" data-bs-toggle="modal" href="#deleteProductModal" data-product-id="{$item.id}" data-product-name="{$item.name}" data-page-delete="cartdelete">{#trash_ico#}</a>
 		</div>
 	</div>
 	{/foreach}

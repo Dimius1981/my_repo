@@ -194,7 +194,7 @@
 		$bg_color = " bg-light";
 		while ($row = mysqli_fetch_assoc($prod_carts_obj)) {
 			$row['bg_color'] = $bg_color;
-			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100);
+			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100) * $row['sale'];
 			if ($row['sale']) {
 				$row['sum'] = $row['col'] * $row['new_price'];
 			} else {
@@ -216,7 +216,11 @@
 		$tpl->assign('prod_carts', $prod_carts_arr);
 
 
-		$tpl->display('main.tpl');
+		if (!$tp) {
+			$tpl->display('main.tpl');
+		} else {
+			$tpl->display('content/'.$tp);
+		}
 
 
 
@@ -226,7 +230,7 @@
 //Добавление товаров в корзину
 //============================================================================
 	} elseif ($page == 'addcart') {
-		print_r($_POST);
+		//print_r($_POST);
 		if (isset($_POST['cart_product_id'])) {
 			$product_id = $_POST['cart_product_id'];
 		} else {
@@ -238,11 +242,55 @@
 			$product_col = 0;
 		}
 
-		add_cart_product($session_id, $product_id, $product_col);
+		//Найти товар с product_id в корзине для пользователя session_id
+		//Если такой товар есть, то сложить их количества вместе и
+		//обновить запись в корзине
+		//Если нет, то добавить товар
+		$old_prod_obj = get_product_from_cart($session_id, $product_id);
+		$old_prod_arr = mysqli_fetch_assoc($old_prod_obj);
+		if ($old_prod_arr) {
+			update_cart($old_prod_arr['id'], $old_prod_arr['user_id'], $old_prod_arr['product_id'], ($old_prod_arr['col'] + $product_col));
+		} else {
+			add_cart_product($session_id, $product_id, $product_col);
+		}
+
+
+
+//Количество товаров в корзине JSon
+//============================================================================
+	} elseif ($page == 'colcart') {
+		echo json_encode(['col_prod_cart' => $col_prod_cart['count(id)']]);
+
+
+
+//Обновление товара в корзине
+//============================================================================
+	} elseif ($page == 'updcart') {
+		if (isset($_GET['col'])) {
+			$prod_col = $_GET['col'];
+		} else {
+			$prod_col = 0;
+		}
+		if (isset($_GET['prod'])) {
+			$prod_id = $_GET['prod'];
+		} else {
+			$prod_id = 0;
+		}
+		update_cart($id, $session_id, $prod_id, $prod_col);
 
 
 
 
+//Удаление товара из корзины
+//============================================================================
+	} elseif ($page == 'cartdelete') {
+		delete_prod_from_cart($id);
+
+
+//Обновление страницы корзины через Ajax
+//============================================================================
+	} elseif ($page == 'cart_view') {
+		$content = "<h3>Ajax update cart page</h3>";
 
 
 
@@ -448,9 +496,7 @@ Array
 		$prod = mysqli_fetch_assoc($prod_obj);
 
 		//Посчитаем скидку
-		if ($prod['sale']) {
-			$prod['new_price'] = $prod['price'] - ($prod['price'] * $prod['sale_percent'] / 100);
-		}
+		$prod['new_price'] = $prod['price'] - ($prod['price'] * $prod['sale_percent'] / 100) * $prod['sale'];
 
 		$tpl->assign('PageTitle', 'Товар: '. $prod['name']);
 		$tpl->assign('Content', $content);

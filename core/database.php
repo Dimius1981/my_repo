@@ -262,6 +262,24 @@ WHERE carts.user_id = $user_id LIMIT $start, $MAX_PROD_PAGE;";
 
 
 
+//Функция вернет товар из корзины по id товара
+function get_product_from_cart($user_id, $prod_id) {
+	global $connect;
+
+	$sql = "SELECT * FROM carts WHERE user_id = $user_id AND product_id = $prod_id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
 //Функция возвращает количество товаров в корзине
 function get_col_products_from_cart($user_id) {
 	global $connect;
@@ -293,6 +311,32 @@ function add_cart_product($user_id, $prod_id, $col) {
 }
 
 
+
+
+//Функция обновляет запись корзины товара с указанным id
+function update_cart($id, $user_id, $prod_id, $col) {
+	global $connect;
+
+	$sql = "UPDATE carts SET user_id = $user_id, product_id = $prod_id, col = $col WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+//Функция удаляет запись товара с корзины по id
+function delete_prod_from_cart($id) {
+	global $connect;
+
+	$sql = "DELETE FROM carts WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
 
 
 

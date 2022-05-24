@@ -43,16 +43,16 @@
   {include file='edit_group.tpl'}
   {include file='delete_group.tpl'}
   {include file='edit_product.tpl'}
-  {include file='delete_product.tpl'}
 {/if}
 
 {if $user_info}
 	{include file='add_to_cart.tpl'}
+  {include file='delete_product.tpl'}
 {/if}
 
 
 <script src="./templates/js/script.js"></script>
-{if ($page == 'products') || ($page == '')}
+{if ($page == 'products') || ($page == '') || ($page == 'prod') || ($page == 'cart')}
 <script src="./templates/js/products.js"></script>
 {/if}
 </body>
