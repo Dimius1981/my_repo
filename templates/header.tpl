@@ -2,7 +2,7 @@
 		<div class="row">
 			<nav class="navbar navbar-expand-sm">
 			  <div class="container-fluid">
-			    <div class="collapse navbar-collapse" id="mynavbar">
+    			<div class="collapse navbar-collapse" id="mynavbar">
 			      <ul class="navbar-nav me-auto">
 			        <li class="nav-item">
 			          <a class="nav-link" href="/">Главная</a>
@@ -17,14 +17,20 @@
 				        <li class="nav-item">
 				          <a class="nav-link" href="?page=cart">Корзина <span class="badge bg-primary" id="prod_in_cart">{$prod_in_cart}</span></a>
 				        </li>
-			        {/if}
-			        <li class="nav-item">
-		          	{if $user_info}
-		          		<a class="nav-link" href="/?logout=true">Выход ({$user_info.name})</a>
+				        <li class="nav-item dropdown">
+				        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">{$user_info.name}</a>
+				        	<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					            <li><a class="dropdown-item" href="/?page=myorders">Мои заказы</a></li>
+					            <li><a class="dropdown-item" href="#">Мои сообщения</a></li>
+					            <li><hr class="dropdown-divider"></li>
+					            <li><a class="dropdown-item" href="/?logout=true">Выход</a></li>
+					        </ul>
+				        </li>
 		          	{else}
-		          		<a class="nav-link" data-bs-toggle="modal" href="#authModal">Вход</a>
+				        <li class="nav-item">
+			          		<a class="nav-link" data-bs-toggle="modal" href="#authModal">Вход</a>
+				        </li>
 		          	{/if}
-			        </li>
 			      </ul>
 			      <form class="d-flex">
 			        <input class="form-control me-2" type="text" placeholder="Найти...">

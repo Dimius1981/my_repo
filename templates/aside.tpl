@@ -8,7 +8,7 @@
 				  	<a class="navbar-brand" href="#">Каталог</a>
 			    </div>
           		{else}
-          		<a class="navbar-brand" href="#">Каталог</a>
+          			<a class="navbar-brand" href="#">Каталог</a>
           		{/if}
 			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="true" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>

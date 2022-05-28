@@ -21,9 +21,22 @@
 						</h4>
 					</div>
 					<div class="col">
+						<nav class="new_class" aria-label="breadcrumb">
+						  <ol class="breadcrumb m-3">
+						    <li class="breadcrumb-item"><a class="group_color_text" href="#">Главная</a></li>
+						    {if $breadcrumb}
+						    	{foreach $breadcrumb as $item}
+						    		<li class="breadcrumb-item"><a class="group_color_text" href="{$item.link}">{$item.name}</a></li>
+						    	{/foreach}
+						    {/if}
+						    <li class="breadcrumb-item" aria-current="page">{$PageTitle}</li>
+						  </ol>
+						</nav>
+						<!--
 						<div class="new_class">
 							<p class="m-3"><a class="group_color_text" href="/">Главная</a> / {$PageTitle}</p>
 						</div>
+						-->
 					</div>
 				</div>
 			</div>

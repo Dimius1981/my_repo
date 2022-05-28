@@ -529,9 +529,12 @@ Array
 			if ($new_id > 0) {
 				//Из таблицы carts перенести товары в таблицу order_items
 				$prod_carts_obj = get_products_from_cart_by_user_id($session_id, $start);
+				$all_sum = 0;
 				while ($row = mysqli_fetch_assoc($prod_carts_obj)) {
 					//print_r($row);
 					$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100) * $row['sale'];
+
+					$all_sum = $all_sum + $row['new_price'] * $row['col'];
 
 					//Создадим запись в таблице order_items
 					add_order_item($new_id, $row['product_id'], $row['new_price'], $row['col']);
@@ -542,6 +545,9 @@ Array
 				//Запрос количества товаров в корзине
 				$col_prod_cart = mysqli_fetch_assoc(get_col_products_from_cart($session_id));
 				$tpl->assign('prod_in_cart', $col_prod_cart['count(id)']);
+
+				//Обновим запись заказа
+				update_order($new_id, $all_sum, 1);
 			}
 
 		}
@@ -549,6 +555,66 @@ Array
 		$tpl->assign('order_id', $new_id);
 
 		$tpl->display('main.tpl');
+
+
+
+
+
+
+
+
+
+//Страница мои заказы (пользователя - не админа)
+//============================================================================
+	} elseif (($page == 'myorders') and ($user_info)) {
+		$tpl->assign('PageTitle', 'Мои заказы');
+		$tpl->assign('Content', $content);
+
+		$my_orders_obj = get_my_orders($session_id);
+		$my_orders_arr = Array();
+
+		while ($row = mysqli_fetch_assoc($my_orders_obj)) {
+			$my_orders_arr[] = $row;
+		}
+
+		$tpl->assign('my_orders', $my_orders_arr);
+		$tpl->assign('orders_count', count($my_orders_arr));
+
+		$tpl->display('main.tpl');
+
+
+
+
+
+
+//Страница мой заказ (пользователя - не админа)
+//============================================================================
+	} elseif (($page == 'orderview') and ($user_info)) {
+		$tpl->assign('PageTitle', 'Заказ #'.$id);
+		$tpl->assign('Content', $content);
+
+		$my_order_obj = get_products_from_my_order($id, $start);
+		$my_order_arr = Array();
+
+		$all_sum = 0;
+		while ($row = mysqli_fetch_assoc($my_order_obj)) {
+			$row['sum'] = $row['col'] * $row['price'];
+			$all_sum += $row['sum'];
+			$my_order_arr[] = $row;
+		}
+
+		$breadcrumb = Array();
+		$breadcrumb[] = ['name' => 'Мои заказы', 'link' => '/?page=myorders'];
+
+		$tpl->assign('my_items', $my_order_arr);
+		$tpl->assign('all_sum', $all_sum);
+		$tpl->assign('breadcrumb', $breadcrumb);
+
+		$tpl->display('main.tpl');
+
+
+
+
 
 
 

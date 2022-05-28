@@ -363,7 +363,7 @@ function delete_prod_from_cart($id) {
 function add_order($user_id) {
 	global $connect;
 
-	$sql = "INSERT INTO orders (user_id, date_create, status) VALUES ($user_id, NOW(), 1);";
+	$sql = "INSERT INTO orders (user_id, date_create, sum_order, status) VALUES ($user_id, NOW(), 0, 1);";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
@@ -377,11 +377,34 @@ function add_order($user_id) {
 
 
 
-//Функция вернет запись о заказе по user_id и status = 1
-function get_new_order($user_id, $status) {
+
+
+//Функция обновляет запись заказа с указанным id
+function update_order($id, $sum_order, $status) {
 	global $connect;
 
-	$sql = "SELECT * FROM orders WHERE user_id = $user_id AND status = $status;";
+	$sql = "UPDATE orders SET sum_order = $sum_order, status = $status
+		WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+
+
+
+//Функция вернет список заказов пользователя
+function get_my_orders($user_id) {
+	global $connect;
+
+	$sql = "SELECT orders.*, order_status.name FROM orders
+	INNER JOIN order_status ON orders.status = order_status.id
+	WHERE user_id = $user_id;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";
@@ -399,7 +422,44 @@ function get_new_order($user_id, $status) {
 
 
 
-//Функция добавит новый заказ
+
+
+
+
+
+//Функция вернет список товаров в корзине пользователя
+function get_products_from_my_order($order_id, $start) {
+	global $connect;
+	global $MAX_PROD_PAGE;
+
+	$sql = "SELECT order_items.*, products.name, products.description, products.image FROM order_items
+			INNER JOIN products ON order_items.product_id = products.id
+			WHERE order_items.order_id = $order_id
+			LIMIT $start, $MAX_PROD_PAGE;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Функция добавит товар к заказу
 function add_order_item($order_id, $product_id, $price, $col) {
 	global $connect;
 

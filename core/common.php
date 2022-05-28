@@ -259,9 +259,30 @@
 //Оформление заказа
 //============================================================================
 	} elseif (($page == 'addorder') and ($user_info)) {
+		$content = '<div class="row p-3">
+			<div class="col text-center">
+				<h3>Поздравляем!</h3>
+				<p>Ваш заказ под номером {$order_id} успешно создан!</p>
+			</div>
+		</div>
+		{include file="content/order_view.tpl"}';
+
+
+
+
+
+//Страница мои заказы (пользователя - не админа)
+//============================================================================
+	} elseif (($page == 'myorders') and ($user_info)) {
+		$content = "{include file='content/myorders_view.tpl'}";
+
+
+
+
+//Страница мой заказ (пользователя - не админа)
+//============================================================================
+	} elseif (($page == 'orderview') and ($user_info)) {
 		$content = "{include file='content/order_view.tpl'}";
-
-
 
 
 
