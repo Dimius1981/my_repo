@@ -141,7 +141,7 @@
 
 //Страница Корзина
 //============================================================================
-	} elseif ($page == 'cart') {
+	} elseif (($page == 'cart') and ($user_info)) {
 		$content = "{include file='content/carts_view.tpl'}";
 
 
@@ -251,6 +251,15 @@
 	} elseif ($page == 'prod') {
 		$content = "{include file='content/prod_info.tpl'}";
 
+
+
+
+
+
+//Оформление заказа
+//============================================================================
+	} elseif (($page == 'addorder') and ($user_info)) {
+		$content = "{include file='content/order_view.tpl'}";
 
 
 

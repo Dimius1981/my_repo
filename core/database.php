@@ -346,6 +346,88 @@ function delete_prod_from_cart($id) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Функция добавит новый заказ
+function add_order($user_id) {
+	global $connect;
+
+	$sql = "INSERT INTO orders (user_id, date_create, status) VALUES ($user_id, NOW(), 1);";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+		return 0;
+	} else {
+		return mysqli_insert_id($connect);
+	}
+}
+
+
+
+
+//Функция вернет запись о заказе по user_id и status = 1
+function get_new_order($user_id, $status) {
+	global $connect;
+
+	$sql = "SELECT * FROM orders WHERE user_id = $user_id AND status = $status;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+
+
+
+//Функция добавит новый заказ
+function add_order_item($order_id, $product_id, $price, $col) {
+	global $connect;
+
+	$sql = "INSERT INTO order_items (order_id, product_id, price, col) VALUES ($order_id, $product_id, $price, $col);";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // User
 // ====================================
 

@@ -188,10 +188,11 @@
 
 //Страница Корзина
 //============================================================================
-	} elseif ($page == 'cart') {
+	} elseif (($page == 'cart') and ($user_info)) {
 		$prod_carts_obj = get_products_from_cart_by_user_id($session_id, $start);
 		$prod_carts_arr = Array();
 		$bg_color = " bg-light";
+		$all_sum = 0;
 		while ($row = mysqli_fetch_assoc($prod_carts_obj)) {
 			$row['bg_color'] = $bg_color;
 			$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100) * $row['sale'];
@@ -200,6 +201,7 @@
 			} else {
 				$row['sum'] = $row['col'] * $row['price'];
 			}
+			$all_sum = $all_sum + $row['sum'];
 			$prod_carts_arr[] = $row;
 			if ($bg_color == "") {
 				$bg_color = " bg-light";
@@ -214,6 +216,8 @@
 		$tpl->assign('Content', $content);
 
 		$tpl->assign('prod_carts', $prod_carts_arr);
+
+		$tpl->assign('all_sum', $all_sum);
 
 
 		if (!$tp) {
@@ -506,6 +510,45 @@ Array
 		$tpl->display('main.tpl');
 
 
+
+
+
+
+//Оформление заказа
+//============================================================================
+	} elseif (($page == 'addorder') and ($user_info)) {
+		$tpl->assign('PageTitle', 'Оформление заказа');
+		$tpl->assign('Content', $content);
+
+		if ($col_prod_cart['count(id)'] > 0) {
+			//Создадим заказ и получим значение id только что вставленной записи
+			$new_id = add_order($session_id);
+
+			//print_r($new_id);
+
+			if ($new_id > 0) {
+				//Из таблицы carts перенести товары в таблицу order_items
+				$prod_carts_obj = get_products_from_cart_by_user_id($session_id, $start);
+				while ($row = mysqli_fetch_assoc($prod_carts_obj)) {
+					//print_r($row);
+					$row['new_price'] = $row['price'] - ($row['price'] * $row['sale_percent'] / 100) * $row['sale'];
+
+					//Создадим запись в таблице order_items
+					add_order_item($new_id, $row['product_id'], $row['new_price'], $row['col']);
+
+					//Удалить запись с корзины
+					delete_prod_from_cart($row['id']);
+				}
+				//Запрос количества товаров в корзине
+				$col_prod_cart = mysqli_fetch_assoc(get_col_products_from_cart($session_id));
+				$tpl->assign('prod_in_cart', $col_prod_cart['count(id)']);
+			}
+
+		}
+
+		$tpl->assign('order_id', $new_id);
+
+		$tpl->display('main.tpl');
 
 
 

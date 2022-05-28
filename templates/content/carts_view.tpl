@@ -1,4 +1,5 @@
 {config_load file='my_conf.conf'}
+{if $prod_in_cart > 0}
 <div class="cart_view m-3">
 	<div class="row pb-2 bg-info">
 		<div class="col-1 text-center m-2">
@@ -59,4 +60,57 @@
 		</div>
 	</div>
 	{/foreach}
+
+	<div class="row pb-2 bg-info">
+		<div class="col-1 text-center m-2">
+
+		</div>
+		<div class="col-1 text-center m-2">
+
+		</div>
+		<div class="col m-2">
+			<b>Общая сумма за все товары:</b>
+		</div>
+		<div class="col-1 text-center m-2">
+
+		</div>
+		<div class="col-1 text-center m-2">
+
+		</div>
+		<div class="col-1 text-center m-2">
+			<b>{$all_sum} тг</b>
+		</div>
+		<div class="col-1 text-center m-2">
+
+		</div>
+	</div>
+
+	<div class="row p-3">
+		<div class="col">
+			Адрес даставки
+      	</div>
+	</div>
+
+	<div class="row p-3 bg-info">
+		<div class="col">
+			Способ оплаты
+      	</div>
+	</div>
+
+<form>
+	<div class="row p-3">
+		<div class="col text-end">
+			<button type="button" class="btn btn-secondary">Отчистить корзину</button>
+          	<button type="submit" class="btn btn-primary">Оформить заказ</button>
+      	</div>
+	</div>
 </div>
+<input type="hidden" name="page" value="addorder"/>
+</form>
+{else}
+	<div class="row p-3">
+		<div class="col text-center">
+			<h3>В вашей корзине нет товаров!</h3>
+		</div>
+	</div>
+{/if}
