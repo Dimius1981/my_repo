@@ -398,6 +398,25 @@ function update_order($id, $sum_order, $status) {
 
 
 
+//Функция обновляет запись заказа с указанным id
+function update_order_status($id, $status) {
+	global $connect;
+
+	$sql = "UPDATE orders SET status = $status
+		WHERE id = $id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+
+
+
 //Функция вернет список заказов пользователя
 function get_my_orders($user_id) {
 	global $connect;
@@ -474,6 +493,54 @@ function add_order_item($order_id, $product_id, $price, $col) {
 
 
 
+
+
+
+
+
+//Функция вернет список всех заказов
+function get_all_orders($start) {
+	global $connect;
+	global $MAX_PROD_PAGE;
+
+	$sql = "SELECT orders.*, order_status.name AS status_name,
+	users.name AS user_name FROM orders
+	INNER JOIN order_status ON orders.status = order_status.id
+	INNER JOIN users ON orders.user_id = users.id
+	LIMIT $start, $MAX_PROD_PAGE;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+
+
+
+
+//Функция вернет список статусов заказов
+function get_list_order_status() {
+	global $connect;
+
+	$sql = "SELECT * FROM order_status ORDER BY name ASC;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+
+		return 0;
+	} else {
+		return $result;
+	}
+}
 
 
 

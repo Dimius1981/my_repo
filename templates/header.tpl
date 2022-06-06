@@ -21,7 +21,9 @@
 				        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">{$user_info.name}</a>
 				        	<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 					            <li><a class="dropdown-item" href="/?page=myorders">Мои заказы</a></li>
-					            <li><a class="dropdown-item" href="#">Мои сообщения</a></li>
+					            {if $user_info.level_id == 1}
+					            <li><a class="dropdown-item" href="/?page=allorders">Все заказы</a></li>
+					            {/if}
 					            <li><hr class="dropdown-divider"></li>
 					            <li><a class="dropdown-item" href="/?logout=true">Выход</a></li>
 					        </ul>

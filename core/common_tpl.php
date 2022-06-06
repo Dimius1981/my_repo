@@ -97,6 +97,13 @@
 		$tpl->assign('PageTitle', $group_info['name']);
 		$tpl->assign('Content', $content);
 
+		$breadcrumb = Array();
+		if ($group_info['par_id'] > 0) {
+			$parent_group = mysqli_fetch_assoc(get_group_products_by_id($group_info['par_id']));
+			$breadcrumb[] = ['name' => $parent_group['name'], 'link' => '/?page=products&group='.$parent_group['id']];
+		}
+		$tpl->assign('breadcrumb', $breadcrumb);
+
 		//Pagination
 		$col_prod_obj = get_col_products_by_group_id($group);
 		$col_prod = mysqli_fetch_assoc($col_prod_obj);
@@ -548,6 +555,16 @@ Array
 
 				//Обновим запись заказа
 				update_order($new_id, $all_sum, 1);
+				$my_order_obj = get_products_from_my_order($new_id, $start);
+				$my_order_arr = Array();
+
+				while ($row = mysqli_fetch_assoc($my_order_obj)) {
+					$row['sum'] = $row['col'] * $row['price'];
+					$my_order_arr[] = $row;
+				}
+
+				$tpl->assign('my_items', $my_order_arr);
+				$tpl->assign('all_sum', $all_sum);
 			}
 
 		}
@@ -604,13 +621,64 @@ Array
 		}
 
 		$breadcrumb = Array();
-		$breadcrumb[] = ['name' => 'Мои заказы', 'link' => '/?page=myorders'];
+		if ($br == 1) {
+			$breadcrumb[] = ['name' => 'Мои заказы', 'link' => '/?page=myorders'];
+		} else if ($br == 2) {
+			$breadcrumb[] = ['name' => 'Все заказы', 'link' => '/?page=allorders'];
+		}
 
 		$tpl->assign('my_items', $my_order_arr);
 		$tpl->assign('all_sum', $all_sum);
 		$tpl->assign('breadcrumb', $breadcrumb);
 
 		$tpl->display('main.tpl');
+
+
+
+
+
+
+
+//Страница все заказы (только для админа)
+//============================================================================
+	} elseif (($page == 'allorders') and ($user_info['level_id'] == 1)) {
+		$tpl->assign('PageTitle', 'Все заказы');
+		$tpl->assign('Content', $content);
+
+		$all_orders_obj = get_all_orders($start);
+		$all_orders_arr = Array();
+
+		while ($row = mysqli_fetch_assoc($all_orders_obj)) {
+			$all_orders_arr[] = $row;
+		}
+
+		$list_status_obj = get_list_order_status();
+		$list_status_arr = Array();
+
+		while($row = mysqli_fetch_assoc($list_status_obj)) {
+			$list_status_arr[] = $row;
+		}
+
+		$tpl->assign('all_orders', $all_orders_arr);
+		$tpl->assign('all_orders_count', count($all_orders_arr));
+		$tpl->assign('list_status', $list_status_arr);
+
+		$tpl->display('main.tpl');
+
+
+
+
+
+
+//Обновление статуса заказа
+//============================================================================
+	} elseif (($page == 'updordst') and ($user_info['level_id'] == 1)) {
+		if (isset($_GET['status'])) {
+			$status_id = $_GET['status'];
+		} else {
+			$status_id = 0;
+		}
+		update_order_status($id, $status_id);
 
 
 

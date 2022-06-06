@@ -56,6 +56,7 @@
   {include file='edit_group.tpl'}
   {include file='delete_group.tpl'}
   {include file='edit_product.tpl'}
+  {include file='confirm_order_status.tpl'}
 {/if}
 
 {if $user_info}

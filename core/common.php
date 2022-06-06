@@ -33,6 +33,12 @@
 		$start = 0;
 	}
 
+	if (isset($_GET['br'])) {
+		$br = $_GET['br'];
+	} else {
+		$br = 0;
+	}
+
 
 	//print_r($_POST);
 
@@ -283,6 +289,23 @@
 //============================================================================
 	} elseif (($page == 'orderview') and ($user_info)) {
 		$content = "{include file='content/order_view.tpl'}";
+
+
+
+
+//Страница все заказы (только для админа)
+//============================================================================
+	} elseif (($page == 'allorders') and ($user_info['level_id'] == 1)) {
+		$content = "{include file='content/allorders_view.tpl'}";
+
+
+
+//Обновление статуса заказа
+//============================================================================
+	} elseif (($page == 'updordst') and ($user_info['level_id'] == 1)) {
+		$content = "Update Order Status";
+
+
 
 
 

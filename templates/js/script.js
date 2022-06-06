@@ -122,3 +122,33 @@ $('#btnDeleteGroup').on('click', function(e) {
 	});
 });
 
+
+
+
+
+
+
+$('.form-select').on('change', function() {
+	//alert($(this).val());
+	//console.log($(this).children('option:selected').text());
+	var order_id = $(this).data('order-id');
+	var status_name = $(this).children('option:selected').text();
+	$('#conf_order_id').html(order_id);
+	$('#conf_new_status').html(status_name);
+	$('#btnChangeOrderStatus').data('order-id', order_id);
+	$('#btnChangeOrderStatus').data('status-id', $(this).val());
+	$('#confOrderStatus').modal('show');
+});
+
+
+
+
+$('#btnChangeOrderStatus').on('click', function() {
+	//alert($(this).data('order-id'));
+	var order_id = $(this).data('order-id');
+	var status_id = $(this).data('status-id');
+	$.get('/?page=updordst&id='+order_id+'&status='+status_id, function(data){
+		console.log(data);
+		$('#confOrderStatus').modal('hide');
+	});
+})
