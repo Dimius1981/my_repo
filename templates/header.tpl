@@ -23,6 +23,7 @@
 					            <li><a class="dropdown-item" href="/?page=myorders">Мои заказы</a></li>
 					            {if $user_info.level_id == 1}
 					            <li><a class="dropdown-item" href="/?page=allorders">Все заказы</a></li>
+					            <li><a class="dropdown-item" href="/?page=allusers">Пользователи</a></li>
 					            {/if}
 					            <li><hr class="dropdown-divider"></li>
 					            <li><a class="dropdown-item" href="/?logout=true">Выход</a></li>

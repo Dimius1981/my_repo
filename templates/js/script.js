@@ -128,7 +128,7 @@ $('#btnDeleteGroup').on('click', function(e) {
 
 
 
-$('.form-select').on('change', function() {
+$('.order-select').on('change', function() {
 	//alert($(this).val());
 	//console.log($(this).children('option:selected').text());
 	var order_id = $(this).data('order-id');
@@ -152,3 +152,133 @@ $('#btnChangeOrderStatus').on('click', function() {
 		$('#confOrderStatus').modal('hide');
 	});
 })
+
+
+
+
+$('#editUserModal').on('show.bs.modal', function(e) {
+	//alert($(e.relatedTarget).data('user-id'));
+	var user_id = $(e.relatedTarget).data('user-id');
+
+	$('#edit-user-name').val('');
+	$('#edit-user-level-id').val(4);
+	$('#edit-user-login').val('');
+	$('#edit-user-new-password').val('');
+	$('#edit-user-email').val('');
+	$('#edit-user-enabled').prop('checked', false);
+
+  //Отключим валидацию формы
+	$('.edit_user_form').removeClass('was-validated');
+	$('#edit-user-level-id').removeClass('is-invalid');
+	$('#edit-user-enabled').removeClass('is-invalid');
+
+  $('#edit_user_id').val(user_id);
+  $('#edit_user_password').val('');
+
+	if (user_id == 0) {
+		//Новый пользователь
+		$('#editUserModalLabel').html('Добавить нового пользователя');
+		$('#edit-user-new-password').prop('required', true);
+	} else {
+		//Редактируем сущ. пользователя
+		$('#editUserModalLabel').html('Редактировать данные пользователя');
+		$('#edit-user-new-password').prop('required', false);
+
+		$.getJSON('/?page=userinfo&id='+user_id, function(data) {
+			console.log(data);
+			$('#edit-user-name').val(data.name);
+			$('#edit-user-level-id').val(data.level_id);
+			$('#edit-user-login').val(data.login);
+			$('#edit-user-new-password').val('');
+			$('#edit_user_password').val(data.pass);
+			$('#edit-user-email').val(data.email);
+			if (data.enabled == 1) {
+				$('#edit-user-enabled').prop('checked', true);
+			} else {
+				$('#edit-user-enabled').prop('checked', false);
+			}
+		});
+	}
+});
+
+
+/*
+Сериализация формы
+edit-user-name=%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%20%D0%AE%D0%B7%D0%B5%D1%80%D0%BE%D0%B2%D0%B8%D1%87&edit-user-level-id=1&edit-user-login=admin&edit-user-password=1234&edit-user-email=admin%40myshop%2Ckz&edit-user-enabled=on&edit_user_id=1
+ */
+
+
+$('#btnEditSaveUser').on('click', function(){
+	//alert('Save!');
+  var form_invalid = 0; //0- форма без ошибок
+
+  if (($('#edit-user-name').val() == '') ||
+  	  ($('#edit-user-login').val() == '') ||
+  	  ($('#edit-user-email').val() == '')) {
+    form_invalid = 1;
+  }
+
+  if (($('#edit_user_id').val() == 0) &&
+  	  ($('#edit-user-new-password').val() == '')) {
+  	form_invalid = 1;
+  }
+
+  if (($('#edit_user_id').val() == 1) &&
+  	  ($('#edit-user-level-id').val() != 1)) {
+  	form_invalid = 1;
+  	$('#edit-user-level-id').addClass('is-invalid');
+  } else {
+  	$('#edit-user-level-id').removeClass('is-invalid');
+  };
+
+  if (($('#edit_user_id').val() == 1) &&
+  	  (!$('#edit-user-enabled').is(':checked'))) {
+  	form_invalid = 1;
+  	$('#edit-user-enabled').addClass('is-invalid');
+  } else {
+  	$('#edit-user-enabled').removeClass('is-invalid');
+  };
+
+  if (form_invalid) {
+    //Отправка не возможна
+    $('.edit_user_form').addClass('was-validated');
+  } else {
+    //Отправим форму
+    $('.edit_user_form').removeClass('was-validated');
+    console.log($('.edit_user_form').serialize());
+
+    $.post('/?page=submituser', $('.edit_user_form').serialize(), function(data){
+    	console.log(data);
+    	$('#editUserModal').modal('hide');
+    	$.get('/?page=allusers_view', function(data){
+    		$('.all_users_view').replaceWith(data);
+    	});
+    });
+  }
+});
+
+
+
+
+
+
+$(document).on('click', '#editUserDisabled', function () {
+	//alert($(this).data('user-id'));
+	$.get('/?page=submit_user_access&id='+$(this).data('user-id')+'&en=0', function(data){
+		console.log(data);
+    	$.get('/?page=allusers_view', function(data){
+    		$('.all_users_view').replaceWith(data);
+    	});
+	});
+});
+
+
+$(document).on('click', '#editUserEnabled', function () {
+	//alert($(this).data('user-id'));
+	$.get('/?page=submit_user_access&id='+$(this).data('user-id')+'&en=1', function(data){
+		console.log(data);
+    	$.get('/?page=allusers_view', function(data){
+    		$('.all_users_view').replaceWith(data);
+    	});
+	});
+});
