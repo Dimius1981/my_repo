@@ -611,6 +611,8 @@ function usertimeupdate($user_id) {
 
 
 
+
+
 // Список пользователей
 function userlist() {
 	global $connect;
@@ -630,6 +632,8 @@ function userlist() {
 
 
 
+
+
 // Список уровней доступа
 function userlevellist() {
 	global $connect;
@@ -644,6 +648,8 @@ function userlevellist() {
 		return $result;
 	}
 }
+
+
 
 
 
@@ -671,6 +677,22 @@ function update_user_info($user_id, $level_id, $name, $login, $pass, $email, $en
 	$sql = "UPDATE users SET level_id = $level_id, name = '$name',
 		login = '$login', pass = '$pass', email = '$email', enabled = $enabled
 		WHERE id = ".$user_id;
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+
+//Функция удаляет запись пользователя
+function delete_user($id) {
+	global $connect;
+
+	$sql = "DELETE FROM users WHERE id = $id;";
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";

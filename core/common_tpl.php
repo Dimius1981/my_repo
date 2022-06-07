@@ -840,6 +840,177 @@ Array
 
 
 
+
+
+
+
+
+
+//Страница все пользователи для админа
+//============================================================================
+	} elseif (($page == 'allusers') and ($user_info['level_id'] == 1)) {
+		$tpl->assign('PageTitle', 'Пользователи');
+		$tpl->assign('Content', $content);
+
+		$all_users_obj = userlist();
+		$all_users_arr = Array();
+
+		$bg_color = " bg-light";
+
+		while ($row = mysqli_fetch_assoc($all_users_obj)) {
+			$row['bg_color'] = $bg_color;
+			$all_users_arr[] = $row;
+			if ($bg_color == "") {
+				$bg_color = " bg-light";
+			} else {
+				$bg_color = "";
+			}
+		}
+
+		$user_levels_obj = userlevellist();
+		$user_levels_arr = Array();
+		while($row = mysqli_fetch_assoc($user_levels_obj)) {
+			$user_levels_arr[] = $row;
+		}
+
+		$tpl->assign('user_levels', $user_levels_arr);
+		$tpl->assign('user_list', $all_users_arr);
+		$tpl->display('main.tpl');
+
+
+
+//Запрос Json инфо о пользователе
+//============================================================================
+	} elseif (($page == 'userinfo') and ($user_info['level_id'] == 1)) {
+		echo json_encode(userinfo($id));
+
+
+
+
+//Сохранение информации о пользователе
+//============================================================================
+	} elseif (($page == 'submituser') and ($user_info['level_id'] == 1)) {
+		//print_r($_POST);
+		if (isset($_POST['edit-user-name'])) {
+			$edit_user_name = $_POST['edit-user-name'];
+		} else {
+			$edit_user_name = '';
+		}
+		if (isset($_POST['edit-user-level-id'])) {
+			$edit_user_level_id = $_POST['edit-user-level-id'];
+		} else {
+			$edit_user_level_id = 0;
+		}
+		if (isset($_POST['edit-user-login'])) {
+			$edit_user_login = $_POST['edit-user-login'];
+		} else {
+			$edit_user_login = '';
+		}
+		if (isset($_POST['edit-user-new-password'])) {
+			$edit_user_new_password = $_POST['edit-user-new-password'];
+		} else {
+			$edit_user_new_password = '';
+		}
+		if (isset($_POST['edit-user-email'])) {
+			$edit_user_email = $_POST['edit-user-email'];
+		} else {
+			$edit_user_email = '';
+		}
+		if (isset($_POST['edit-user-enabled'])) {
+			$edit_user_enabled = 1;
+		} else {
+			$edit_user_enabled = 0;
+		}
+		if (isset($_POST['edit_user_id'])) {
+			$edit_user_id = $_POST['edit_user_id'];
+		} else {
+			$edit_user_id = 0;
+		}
+		if (isset($_POST['edit_user_password'])) {
+			$edit_user_password = $_POST['edit_user_password'];
+		} else {
+			$edit_user_password = '';
+		}
+		if ($edit_user_id == 0) {
+			//Добавим нового пользователя
+			add_new_user($edit_user_level_id, $edit_user_name, $edit_user_login, sha1($edit_user_new_password), $edit_user_email,
+				$edit_user_enabled);
+		} else {
+			//Обновим данные существующего пользователя
+			if ($edit_user_new_password == '') {
+				$new_password = $edit_user_password;
+			} else {
+				$new_password = sha1($edit_user_new_password);
+			}
+			update_user_info($edit_user_id, $edit_user_level_id, $edit_user_name,
+				$edit_user_login, $new_password, $edit_user_email,
+				$edit_user_enabled);
+		}
+
+
+
+
+
+
+//Страница все пользователи для админа только контент для обновления
+//============================================================================
+	} elseif (($page == 'allusers_view') and ($user_info['level_id'] == 1)) {
+		$all_users_obj = userlist();
+		$all_users_arr = Array();
+
+		$bg_color = " bg-light";
+
+		while ($row = mysqli_fetch_assoc($all_users_obj)) {
+			$row['bg_color'] = $bg_color;
+			$all_users_arr[] = $row;
+			if ($bg_color == "") {
+				$bg_color = " bg-light";
+			} else {
+				$bg_color = "";
+			}
+		}
+
+		$tpl->assign('user_list', $all_users_arr);
+		$tpl->display('content/allusers_view.tpl');
+
+
+
+
+
+
+
+//Изменение доступа на сайт для пользователя
+//============================================================================
+	} elseif (($page == 'submit_user_access') and ($user_info['level_id'] == 1)) {
+			if ($id > 1) {
+			$user_data_arr = userinfo($id);
+
+			if (isset($_GET['en'])) {
+				$en = $_GET['en'];
+			} else {
+				$en = 0;
+			}
+
+			update_user_info($id, $user_data_arr['level_id'],
+				$user_data_arr['name'], $user_data_arr['login'],
+				$user_data_arr['pass'], $user_data_arr['email'], $en);
+		}
+
+
+
+
+
+//Удаление аккаунта пользователя
+//============================================================================
+	} elseif (($page == 'delete_user') and ($user_info['level_id'] == 1)) {
+		if ($id > 1) {
+			delete_user($id);
+		}
+
+
+
+
+
 //404
 //=============================================================================
 	} else {
