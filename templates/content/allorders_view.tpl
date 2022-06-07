@@ -37,7 +37,7 @@
 			{$item.sum_order}
 		</div>
 		<div class="col m-2">
-			<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" data-order-id="{$item.id}" data-status-name="{$item.status_name}">
+			<select class="order-select form-select form-select-lg mb-3" aria-label=".form-select-lg" data-order-id="{$item.id}" data-status-name="{$item.status_name}">
 			{foreach $list_status as $status}
 				{if $item.status == $status.id}
 			  		<option selected value="{$status.id}">{$status.name}</option>

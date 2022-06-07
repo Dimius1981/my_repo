@@ -572,10 +572,12 @@ function authorization($login, $pass) {
 		echo "SQL = \"". $sql . "\"";
 	} else {
 		$res_arr = mysqli_fetch_assoc($result);
-		$_SESSION['id'] = $res_arr['id'];
+		if ($res_arr['enabled']) {
+			$_SESSION['id'] = $res_arr['id'];
 
-		//Обновим время входа только что авторизованного пользователя
-		usertimeupdate($res_arr['id']);
+			//Обновим время входа только что авторизованного пользователя
+			usertimeupdate($res_arr['id']);
+		}
 	}
 }
 
@@ -599,6 +601,76 @@ function usertimeupdate($user_id) {
 	global $connect;
 
 	$sql = "UPDATE users SET date_login = NOW() WHERE id = ".$user_id;
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+// Список пользователей
+function userlist() {
+	global $connect;
+
+	$sql = "SELECT users.*, user_levels.name as level_name FROM users INNER JOIN user_levels ON user_levels.id = users.level_id;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+
+// Список уровней доступа
+function userlevellist() {
+	global $connect;
+
+	$sql = "SELECT * FROM user_levels;";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+		return 0;
+	} else {
+		return $result;
+	}
+}
+
+
+
+
+//Функция добавит запись нового пользователя
+function add_new_user($level_id, $name, $login, $pass, $email, $enabled) {
+	global $connect;
+
+	$sql = "INSERT INTO users (level_id, name, login, pass, email, enabled) VALUES ($level_id, '$name', '$login', '$pass', '$email', $enabled);";
+	$result = @mysqli_query($connect, $sql);
+	if (!$result) {
+		echo "MySQL Error: ".mysqli_error($connect)."</br>";
+		echo "SQL = \"". $sql . "\"";
+	}
+}
+
+
+
+
+
+//Обновим запись пользователя
+function update_user_info($user_id, $level_id, $name, $login, $pass, $email, $enabled) {
+	global $connect;
+
+	$sql = "UPDATE users SET level_id = $level_id, name = '$name',
+		login = '$login', pass = '$pass', email = '$email', enabled = $enabled
+		WHERE id = ".$user_id;
 	$result = @mysqli_query($connect, $sql);
 	if (!$result) {
 		echo "MySQL Error: ".mysqli_error($connect)."</br>";

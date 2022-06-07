@@ -17,6 +17,9 @@
 						{if ($user_info.level_id == 1) && ($page == 'products')}
 							<a class="btn_new_products" data-bs-toggle="modal" href="#editProductModal" id="btnNewProduct" data-product-id="0">{#journal_plus_ico#}</a>
 						{/if}
+						{if ($user_info.level_id == 1) && ($page == 'allusers')}
+							<a class="btn_new_products" data-bs-toggle="modal" href="#editUserModal" id="btnNewUser" data-user-id="0">{#journal_plus_ico#}</a>
+						{/if}
 						  {$PageTitle}
 						</h4>
 					</div>
@@ -57,6 +60,7 @@
   {include file='delete_group.tpl'}
   {include file='edit_product.tpl'}
   {include file='confirm_order_status.tpl'}
+  {include file='edit_user.tpl'}
 {/if}
 
 {if $user_info}
